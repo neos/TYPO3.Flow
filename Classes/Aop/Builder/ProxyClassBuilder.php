@@ -420,7 +420,7 @@ class ProxyClassBuilder
 
         if (!$this->reflectionService->hasMethod($targetClassName, '__wakeup')) {
             $proxyClass->getMethod('__wakeup')->addPostParentCallCode(<<<PHP
-            if (method_exists(get_parent_class(\$this), '__wakeup') && is_callable('parent::__wakeup')) parent::__wakeup();
+            if (method_exists(get_parent_class(\$this), '__wakeup') && is_callable([parent::class, '__wakeup'])) parent::__wakeup();
             PHP);
         }
         $proxyClass->addTraits(['\\' . AdvicesTrait::class]);
