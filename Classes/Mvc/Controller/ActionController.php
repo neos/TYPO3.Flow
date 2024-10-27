@@ -257,7 +257,7 @@ class ActionController extends AbstractController
             $this->initializeView($this->view);
         }
 
-        $httpResponse = $this->callActionMethod($request, $this->arguments, $response->buildHttpResponse());
+        $httpResponse = $this->callActionMethod($request, $this->arguments, $response);
 
         if (!$httpResponse->hasHeader('Content-Type')) {
             $httpResponse = $httpResponse->withHeader('Content-Type', $this->negotiatedMediaType);
@@ -514,7 +514,7 @@ class ActionController extends AbstractController
      * @param Arguments $arguments
      * @param ResponseInterface $httpResponse The most likely empty response, previously available as $this->response
      */
-    protected function callActionMethod(ActionRequest $request, Arguments $arguments, ResponseInterface $httpResponse): ResponseInterface
+    protected function callActionMethod(ActionRequest $request, Arguments $arguments, ActionResponse $response): ResponseInterface
     {
         $preparedArguments = [];
         foreach ($arguments as $argument) {
@@ -554,6 +554,9 @@ class ActionController extends AbstractController
                 $actionResult = $this->{$this->errorMethodName}();
             }
         }
+
+        // freeze $response previously available as $this->response
+        $httpResponse = $response->buildHttpResponse();
 
         if ($actionResult instanceof ResponseInterface) {
             return $actionResult;
