@@ -106,12 +106,6 @@ class ActionRequest
     protected $format = '';
 
     /**
-     * If this request has been changed and needs to be dispatched again
-     * @var boolean
-     */
-    protected $dispatched = false;
-
-    /**
      * The parent request – either another sub ActionRequest a main ActionRequest or null
      * @var ?ActionRequest
      */
@@ -654,14 +648,6 @@ class ActionRequest
     public function getFormat(): string
     {
         return $this->format;
-    }
-
-    /**
-     * Resets the dispatched status to false
-     */
-    public function __clone()
-    {
-        $this->dispatched = false;
     }
 
     /**
