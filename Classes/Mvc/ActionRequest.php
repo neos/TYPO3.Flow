@@ -106,12 +106,6 @@ class ActionRequest
     protected $format = '';
 
     /**
-     * If this request has been changed and needs to be dispatched again
-     * @var boolean
-     */
-    protected $dispatched = false;
-
-    /**
      * The parent request – either another sub ActionRequest a main ActionRequest or null
      * @var ?ActionRequest
      */
@@ -657,14 +651,6 @@ class ActionRequest
     }
 
     /**
-     * Resets the dispatched status to false
-     */
-    public function __clone()
-    {
-        $this->dispatched = false;
-    }
-
-    /**
      * We provide our own __sleep method, where we serialize all properties *except* the parentRequest if it is
      * a HTTP request -- as this one contains $_SERVER etc.
      *
@@ -672,7 +658,7 @@ class ActionRequest
      */
     public function __sleep()
     {
-        $properties = ['controllerPackageKey', 'controllerSubpackageKey', 'controllerName', 'controllerActionName', 'arguments', 'internalArguments', 'pluginArguments', 'argumentNamespace', 'format', 'dispatched'];
+        $properties = ['controllerPackageKey', 'controllerSubpackageKey', 'controllerName', 'controllerActionName', 'arguments', 'internalArguments', 'pluginArguments', 'argumentNamespace', 'format'];
         if ($this->parentRequest instanceof ActionRequest) {
             $properties[] = 'parentRequest';
         }

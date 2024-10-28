@@ -130,6 +130,16 @@ class ActionControllerTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function requestAndResponseAreAvailableInTheAction()
+    {
+        $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertesta/fifth?argument=the-value');
+        self::assertEquals('Fifth action (fifth) with: "the-value"', $response->getBody()->getContents());
+        self::assertEquals('Hello World', $response->getHeaderLine('X-Foo'));
+    }
+
+    /**
      * Bug #36913
      *
      * @test

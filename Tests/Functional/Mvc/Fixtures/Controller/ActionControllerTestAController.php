@@ -66,6 +66,15 @@ class ActionControllerTestAController extends ActionController
     }
 
     /**
+     * Tests response and request
+     */
+    public function fifthAction()
+    {
+        $this->response->setHttpHeader('X-Foo', 'Hello World');
+        return sprintf('Fifth action (%s) with: "%s"', $this->request->getControllerActionName(), $this->request->getArgument('argument'));
+    }
+
+    /**
      * @param string $putArgument
      * @param string $getArgument
      * @return string
