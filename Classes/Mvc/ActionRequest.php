@@ -658,7 +658,7 @@ class ActionRequest
      */
     public function __sleep()
     {
-        $properties = ['controllerPackageKey', 'controllerSubpackageKey', 'controllerName', 'controllerActionName', 'arguments', 'internalArguments', 'pluginArguments', 'argumentNamespace', 'format', 'dispatched'];
+        $properties = ['controllerPackageKey', 'controllerSubpackageKey', 'controllerName', 'controllerActionName', 'arguments', 'internalArguments', 'pluginArguments', 'argumentNamespace', 'format'];
         if ($this->parentRequest instanceof ActionRequest) {
             $properties[] = 'parentRequest';
         }
