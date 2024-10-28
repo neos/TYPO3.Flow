@@ -512,7 +512,7 @@ class ActionController extends AbstractController
      *
      * @param ActionRequest $request
      * @param Arguments $arguments
-     * @param ResponseInterface $httpResponse The most likely empty response, previously available as $this->response
+     * @param ActionResponse $response The most likely empty response, previously available as $this->response
      */
     protected function callActionMethod(ActionRequest $request, Arguments $arguments, ActionResponse $response): ResponseInterface
     {
