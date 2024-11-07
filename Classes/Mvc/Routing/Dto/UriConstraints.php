@@ -213,7 +213,7 @@ final class UriConstraints
      * Create a new instance with a query string corresponding to the given $values merged with any existing query string constraint
      *
      * @param array $values
-     * @return $this
+     * @return UriConstraints
      */
     public function withAddedQueryValues(array $values): self
     {
