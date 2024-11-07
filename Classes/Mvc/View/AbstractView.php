@@ -84,7 +84,7 @@ abstract class AbstractView implements ViewInterface
             $this->supportedOptions,
             function ($supportedOptionData, $supportedOptionName, $options) {
                 if (isset($supportedOptionData[3]) && !array_key_exists($supportedOptionName, $options)) {
-                    throw new Exception('Required view option not set: ' . $supportedOptionName, 1359625876);
+                    throw new Exception('Required view option not set: ' . $supportedOptionName, 1359625877);
                 }
             },
             $options
@@ -112,7 +112,7 @@ abstract class AbstractView implements ViewInterface
     public function getOption($optionName)
     {
         if (!array_key_exists($optionName, $this->supportedOptions)) {
-            throw new Exception(sprintf('The view option "%s" you\'re trying to get doesn\'t exist in class "%s".', $optionName, get_class($this)), 1359625876);
+            throw new Exception(sprintf('The view option "%s" you\'re trying to get doesn\'t exist in class "%s".', $optionName, get_class($this)), 1359625878);
         }
 
         return $this->options[$optionName];
@@ -129,7 +129,7 @@ abstract class AbstractView implements ViewInterface
     public function setOption($optionName, $value)
     {
         if (!array_key_exists($optionName, $this->supportedOptions)) {
-            throw new Exception(sprintf('The view option "%s" you\'re trying to set doesn\'t exist in class "%s".', $optionName, get_class($this)), 1359625876);
+            throw new Exception(sprintf('The view option "%s" you\'re trying to set doesn\'t exist in class "%s".', $optionName, get_class($this)), 1359625879);
         }
 
         $this->options[$optionName] = $value;
