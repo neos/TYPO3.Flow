@@ -140,14 +140,23 @@ class RequestBuilder
                 }
             }
         }
-        if (count($rawCommandLineArguments) === 0) {
+        $firstArgument = count($rawCommandLineArguments) ? trim(array_shift($rawCommandLineArguments)) : null;
+        if (
+            $firstArgument === null
+            || $firstArgument === '--help'
+        ) {
             $request->setControllerCommandName('helpStub');
 
             return $request;
         }
-        $commandIdentifier = trim(array_shift($rawCommandLineArguments));
+        if (in_array('--help', $rawCommandLineArguments, true)) {
+            $request->setControllerCommandName('help');
+            $request->setArguments(['commandIdentifier' => $firstArgument]);
+            return $request;
+        }
+
         try {
-            $command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
+            $command = $this->commandManager->getCommandByIdentifier($firstArgument);
         } catch (CommandException $exception) {
             $request->setArgument('exception', $exception);
             $request->setControllerCommandName('error');
@@ -188,6 +197,9 @@ class RequestBuilder
         $requiredArguments = [];
         $optionalArguments = [];
         foreach ($commandMethodParameters as $parameterName => $parameterInfo) {
+            if ($parameterName === 'help') {
+                throw new \RuntimeException(sprintf('The option --help is reserved in %s::%s', $controllerObjectName, $commandMethodName), 1730715152);
+            }
             if ($parameterInfo['optional'] === false) {
                 $requiredArguments[strtolower($parameterName)] = [
                     'parameterName' => $parameterName,
