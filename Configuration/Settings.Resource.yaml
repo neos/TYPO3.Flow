@@ -46,7 +46,6 @@ Neos:
           target: 'localWebDirectoryStaticResourcesTarget'
           pathPatterns:
             - '*/Resources/Public/'
-            - '*/Resources/Public/*'
 
         # Collection which contains all persistent resources
         persistent:
