@@ -1930,10 +1930,11 @@ class ReflectionService
             $parameterInformation[self::DATA_PARAMETER_DEFAULT_VALUE] = $parameter->getDefaultValue();
         }
         $paramAnnotations = $method->isTaggedWith('param') ? $method->getTagValues('param') : [];
-        if (isset($paramAnnotations[$parameter->getPosition()])) {
-            $explodedParameters = explode(' ', $paramAnnotations[$parameter->getPosition()]);
-            if (count($explodedParameters) >= 2) {
+        foreach ($paramAnnotations as $paramAnnotation) {
+            $explodedParameters = explode(' ', $paramAnnotation);
+            if (count($explodedParameters) >= 2 && $explodedParameters[1] === '$' . $parameter->getName()) {
                 $parameterType = $this->expandType($method->getDeclaringClass(), $explodedParameters[0]);
+                break;
             }
         }
         if (!isset($parameterInformation[self::DATA_PARAMETER_TYPE]) && $parameterType !== null) {
