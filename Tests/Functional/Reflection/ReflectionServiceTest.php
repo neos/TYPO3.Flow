@@ -227,7 +227,7 @@ class ReflectionServiceTest extends FunctionalTestCase
                 'array' => true,
                 'byReference' => false,
                 'allowsNull' => false,
-                'defaultValue' => NULL,
+                'defaultValue' => null,
                 'scalarDeclaration' => false,
             ],
             'param3' => [
@@ -238,7 +238,7 @@ class ReflectionServiceTest extends FunctionalTestCase
                 'array' => false,
                 'byReference' => false,
                 'allowsNull' => true,
-                'defaultValue' => NULL,
+                'defaultValue' => null,
                 'scalarDeclaration' => false,
             ],
         ];
