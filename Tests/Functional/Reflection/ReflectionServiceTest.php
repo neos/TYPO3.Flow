@@ -12,6 +12,9 @@ namespace Neos\Flow\Tests\Functional\Reflection;
  */
 
 use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\Functional\Reflection\Fixtures\Model\SubEntity;
+use Neos\Flow\Tests\Functional\Reflection\Fixtures\Model\SubSubEntity;
+use Neos\Flow\Tests\Functional\Reflection\Fixtures\Model\SubSubSubEntity;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Tests\Functional\Reflection;
 use Neos\Flow\Tests\Functional\Persistence;
@@ -195,6 +198,51 @@ class ReflectionServiceTest extends FunctionalTestCase
         $expectedType = Reflection\Fixtures\Model\SubEntity::class . '|null';
         $actualType = $methodParameters['parameter']['type'];
         self::assertSame($expectedType, $actualType);
+    }
+
+    /**
+     * @test
+     * @see https://github.com/neos/flow-development-collection/issues/3423
+     */
+    public function methodParameterTypeExpansionWorksWithParamsWithPartialAnnotationCoverage()
+    {
+        $methodParameters = $this->reflectionService->getMethodParameters(Reflection\Fixtures\Model\EntityWithUseStatements::class, 'multipleParamsWithPartialAnnotationCoverage');
+        $expectedResult = [
+            'param1' => [
+                'position' => 0,
+                'optional' => false,
+                'type' => SubEntity::class,
+                'class' => SubEntity::class,
+                'array' => false,
+                'byReference' => false,
+                'allowsNull' => false,
+                'defaultValue' => null,
+                'scalarDeclaration' => false,
+            ],
+            'param2' => [
+                'position' => 1,
+                'optional' => false,
+                'type' => 'array<' . SubSubEntity::class . '>',
+                'class' => null,
+                'array' => true,
+                'byReference' => false,
+                'allowsNull' => false,
+                'defaultValue' => null,
+                'scalarDeclaration' => false,
+            ],
+            'param3' => [
+                'position' => 2,
+                'optional' => true,
+                'type' => SubSubSubEntity::class,
+                'class' => SubSubSubEntity::class,
+                'array' => false,
+                'byReference' => false,
+                'allowsNull' => true,
+                'defaultValue' => null,
+                'scalarDeclaration' => false,
+            ],
+        ];
+        self::assertSame($expectedResult, $methodParameters);
     }
 
     /**

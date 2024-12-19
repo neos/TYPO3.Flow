@@ -74,4 +74,11 @@ class EntityWithUseStatements
     public function simpleType($parameter)
     {
     }
+
+    /**
+     * @param array<SubSubEntity> $param2 some description
+     */
+    public function multipleParamsWithPartialAnnotationCoverage(SubEntity $param1, array $param2, SubSubSubEntity|null $param3 = null): void
+    {
+    }
 }
