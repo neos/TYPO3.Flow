@@ -1784,7 +1784,7 @@ class ConfigurationManagerTest extends UnitTestCase
      * @param array $methods
      * @return ConfigurationManager|MockObject
      */
-    protected function getAccessibleConfigurationManager(array $methods = [], ApplicationContext $customContext = null)
+    protected function getAccessibleConfigurationManager(array $methods = [], ?ApplicationContext $customContext = null)
     {
         return $this->getAccessibleMock(ConfigurationManager::class, $methods, [$customContext ?? $this->mockContext]);
     }

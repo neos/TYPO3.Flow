@@ -359,7 +359,7 @@ abstract class FunctionalTestCase extends \Neos\Flow\Tests\BaseTestCase
      * @return Route
      * @api
      */
-    protected function registerRoute($name, $uriPattern, array $defaults, $appendExceedingArguments = false, array $httpMethods = null)
+    protected function registerRoute($name, $uriPattern, array $defaults, $appendExceedingArguments = false, ?array $httpMethods = null)
     {
         $route = new Route();
         $route->setName($name);

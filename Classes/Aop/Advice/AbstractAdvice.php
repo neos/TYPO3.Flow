@@ -66,7 +66,7 @@ class AbstractAdvice implements AdviceInterface
      * @param ObjectManagerInterface $objectManager Only require if a runtime evaluations function is specified
      * @param \Closure $runtimeEvaluator Runtime evaluations function
      */
-    public function __construct(string $aspectObjectName, string $adviceMethodName, ObjectManagerInterface $objectManager = null, \Closure $runtimeEvaluator = null)
+    public function __construct(string $aspectObjectName, string $adviceMethodName, ?ObjectManagerInterface $objectManager = null, ?\Closure $runtimeEvaluator = null)
     {
         $this->aspectObjectName = $aspectObjectName;
         $this->adviceMethodName = $adviceMethodName;

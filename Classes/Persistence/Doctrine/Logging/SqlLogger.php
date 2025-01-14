@@ -35,7 +35,7 @@ class SqlLogger implements \Doctrine\DBAL\Logging\SQLLogger
      * @param array $types The SQL parameter types.
      * @return void
      */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, ?array $params = null, ?array $types = null)
     {
         if ($this->logger instanceof DependencyProxy) {
             $this->logger->_activateDependency();

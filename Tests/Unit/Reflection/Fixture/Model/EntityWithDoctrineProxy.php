@@ -78,7 +78,7 @@ class EntityWithDoctrineProxy extends Entity implements \Doctrine\ORM\Proxy\Prox
      * {@inheritDoc}
      * @internal generated method: use only when explicitly handling proxy specific loading logic
      */
-    public function __setInitializer(\Closure $initializer = null)
+    public function __setInitializer(?\Closure $initializer = null)
     {
         $this->__initializer__ = $initializer;
     }
@@ -96,7 +96,7 @@ class EntityWithDoctrineProxy extends Entity implements \Doctrine\ORM\Proxy\Prox
      * {@inheritDoc}
      * @internal generated method: use only when explicitly handling proxy specific loading logic
      */
-    public function __setCloner(\Closure $cloner = null)
+    public function __setCloner(?\Closure $cloner = null)
     {
         $this->__cloner__ = $cloner;
     }

@@ -51,7 +51,7 @@ class BooleanConverter extends AbstractTypeConverter
      * @return boolean
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if (is_bool($source)) {
             return $source;

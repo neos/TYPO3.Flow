@@ -149,7 +149,7 @@ interface TokenInterface
      * @param Account $account An account object
      * @return void
      */
-    public function setAccount(Account $account = null);
+    public function setAccount(?Account $account = null);
 
     /**
      * Returns a string representation of the token for logging purposes.

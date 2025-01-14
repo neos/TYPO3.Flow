@@ -107,7 +107,7 @@ class MessageCollector
      * @return void
      * @api
      */
-    public function flush(callable $callback = null): void
+    public function flush(?callable $callback = null): void
     {
         foreach ($this->messages as $message) {
             /** @var Message $message */

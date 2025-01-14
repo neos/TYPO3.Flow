@@ -26,7 +26,7 @@ class AuthenticationController extends AbstractAuthenticationController
      * @param ActionRequest $originalRequest
      * @return string
      */
-    public function onAuthenticationSuccess(ActionRequest $originalRequest = null)
+    public function onAuthenticationSuccess(?ActionRequest $originalRequest = null)
     {
         if ($originalRequest !== null) {
             $this->redirectToRequest($originalRequest);
@@ -38,7 +38,7 @@ class AuthenticationController extends AbstractAuthenticationController
      * @param AuthenticationRequiredException $exception
      * @throws FlowException
      */
-    public function onAuthenticationFailure(AuthenticationRequiredException $exception = null)
+    public function onAuthenticationFailure(?AuthenticationRequiredException $exception = null)
     {
         throw new FlowException('Failure Method Exception', 42);
     }

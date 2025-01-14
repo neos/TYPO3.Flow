@@ -57,7 +57,7 @@ class ActionControllerTestBController extends ActionController
      * @param TestObjectArgument $argument
      * @return string
      */
-    public function optionalObjectAction(TestObjectArgument $argument = null)
+    public function optionalObjectAction(?TestObjectArgument $argument = null)
     {
         if ($argument === null) {
             return 'null';
@@ -69,7 +69,7 @@ class ActionControllerTestBController extends ActionController
      * @param TestObjectArgument|null $argument
      * @return string
      */
-    public function optionalAnnotatedObjectAction(TestObjectArgument $argument = null)
+    public function optionalAnnotatedObjectAction(?TestObjectArgument $argument = null)
     {
         if ($argument === null) {
             return 'null';
@@ -265,7 +265,7 @@ class ActionControllerTestBController extends ActionController
      * @param \DateTime $argument
      * @return string
      */
-    public function optionalDateAction(\DateTime $argument = null)
+    public function optionalDateAction(?\DateTime $argument = null)
     {
         if ($argument === null) {
             return 'null';
