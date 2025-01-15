@@ -47,7 +47,7 @@ final class Validate
      */
     public $validationGroups = ['Default'];
 
-    public function __construct(?string $argumentName = null, string $type = null, array $options = [], ?array $validationGroups = null)
+    public function __construct(?string $argumentName = null, ?string $type = null, array $options = [], ?array $validationGroups = null)
     {
         $this->type = $type;
 

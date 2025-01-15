@@ -61,7 +61,7 @@ class RequestMatcher
      * @param ActionRequest $actionRequest
      * @param RequestMatcher $parentMatcher
      */
-    public function __construct(ActionRequest $actionRequest = null, $parentMatcher = null)
+    public function __construct(?ActionRequest $actionRequest = null, $parentMatcher = null)
     {
         $this->request = $actionRequest;
         $this->parentMatcher = $parentMatcher;

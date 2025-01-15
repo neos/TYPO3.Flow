@@ -68,7 +68,7 @@ abstract class AbstractToken implements TokenInterface
      *
      * @param array|null $options
      */
-    public function __construct(array $options = null)
+    public function __construct(?array $options = null)
     {
         $this->options = $options ?? [];
     }
@@ -189,7 +189,7 @@ abstract class AbstractToken implements TokenInterface
      * @param Account $account An account object
      * @return void
      */
-    public function setAccount(Account $account = null)
+    public function setAccount(?Account $account = null)
     {
         $this->account = $account;
     }

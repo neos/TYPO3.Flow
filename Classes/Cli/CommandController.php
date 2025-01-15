@@ -209,7 +209,7 @@ class CommandController implements CommandControllerInterface
      * @return void
      * @throws StopCommandException
      */
-    protected function forward(string $commandName, string $controllerObjectName = null, array $arguments = [])
+    protected function forward(string $commandName, ?string $controllerObjectName = null, array $arguments = [])
     {
         $this->request->setDispatched(false);
         $this->request->setControllerCommandName($commandName);

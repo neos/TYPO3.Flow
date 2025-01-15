@@ -108,7 +108,7 @@ class PropertyMapper
      * @throws SecurityException
      * @api
      */
-    public function convert($source, $targetType, PropertyMappingConfigurationInterface $configuration = null)
+    public function convert($source, $targetType, ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($configuration === null) {
             $configuration = $this->buildPropertyMappingConfiguration();

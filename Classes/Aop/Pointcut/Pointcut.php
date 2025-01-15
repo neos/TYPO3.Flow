@@ -71,7 +71,7 @@ class Pointcut implements PointcutFilterInterface
      * @param string $aspectClassName The name of the aspect class where the pointcut was declared (either explicitly or from an advice's pointcut expression)
      * @param string $pointcutMethodName (optional) If the pointcut is created from a pointcut declaration, the name of the method declaring the pointcut must be passed
      */
-    public function __construct(string $pointcutExpression, PointcutFilterComposite $pointcutFilterComposite, string $aspectClassName, string $pointcutMethodName = null)
+    public function __construct(string $pointcutExpression, PointcutFilterComposite $pointcutFilterComposite, string $aspectClassName, ?string $pointcutMethodName = null)
     {
         $this->pointcutExpression = $pointcutExpression;
         $this->pointcutFilterComposite = $pointcutFilterComposite;

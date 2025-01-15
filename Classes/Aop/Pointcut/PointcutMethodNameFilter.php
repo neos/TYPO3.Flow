@@ -60,7 +60,7 @@ class PointcutMethodNameFilter implements PointcutFilterInterface
      * @param array $methodArgumentConstraints array of method constraints
      * @throws InvalidPointcutExpressionException
      */
-    public function __construct(string $methodNameFilterExpression, string $methodVisibility = null, array $methodArgumentConstraints = [])
+    public function __construct(string $methodNameFilterExpression, ?string $methodVisibility = null, array $methodArgumentConstraints = [])
     {
         $this->methodNameFilterExpression = $methodNameFilterExpression;
         if ($methodVisibility !== null && preg_match(self::PATTERN_MATCHVISIBILITYMODIFIER, $methodVisibility) !== 1) {

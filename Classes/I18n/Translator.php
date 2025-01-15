@@ -123,7 +123,7 @@ class Translator
      * @throws Exception\InvalidFormatPlaceholderException
      * @api
      */
-    public function translateByOriginalLabel($originalLabel, array $arguments = [], $quantity = null, Locale $locale = null, string $sourceName = 'Main', string $packageKey = 'Neos.Flow')
+    public function translateByOriginalLabel($originalLabel, array $arguments = [], $quantity = null, ?Locale $locale = null, string $sourceName = 'Main', string $packageKey = 'Neos.Flow')
     {
         if ($locale === null) {
             $locale = $this->localizationService->getConfiguration()->getCurrentLocale();
@@ -181,7 +181,7 @@ class Translator
      * @api
      * @see Translator::translateByOriginalLabel()
      */
-    public function translateById($labelId, array $arguments = [], $quantity = null, Locale $locale = null, $sourceName = 'Main', $packageKey = 'Neos.Flow')
+    public function translateById($labelId, array $arguments = [], $quantity = null, ?Locale $locale = null, $sourceName = 'Main', $packageKey = 'Neos.Flow')
     {
         if ($locale === null) {
             $locale = $this->localizationService->getConfiguration()->getCurrentLocale();

@@ -114,7 +114,7 @@ class RouterCachingService
      * @param RouteLifetime|null $matchedLifetime
      * @return void
      */
-    public function storeMatchResults(RouteContext $routeContext, array $matchResults, RouteTags $matchedTags = null, RouteLifetime $matchedLifetime = null)
+    public function storeMatchResults(RouteContext $routeContext, array $matchResults, ?RouteTags $matchedTags = null, ?RouteLifetime $matchedLifetime = null)
     {
         if ($this->containsObject($matchResults)) {
             return;
@@ -152,7 +152,7 @@ class RouterCachingService
      * @param RouteLifetime|null $resolvedLifetime
      * @return void
      */
-    public function storeResolvedUriConstraints(ResolveContext $resolveContext, UriConstraints $uriConstraints, RouteTags $resolvedTags = null, RouteLifetime $resolvedLifetime = null)
+    public function storeResolvedUriConstraints(ResolveContext $resolveContext, UriConstraints $uriConstraints, ?RouteTags $resolvedTags = null, ?RouteLifetime $resolvedLifetime = null)
     {
         $routeValues = $this->convertObjectsToHashes($resolveContext->getRouteValues());
         if ($routeValues === null) {

@@ -75,7 +75,7 @@ class BaseUriProvider
      * @return UriInterface
      * @throws Exception
      */
-    public function getConfiguredBaseUriOrFallbackToCurrentRequest(ServerRequestInterface $fallbackRequest = null): UriInterface
+    public function getConfiguredBaseUriOrFallbackToCurrentRequest(?ServerRequestInterface $fallbackRequest = null): UriInterface
     {
         $baseUri = $this->getConfiguredBaseUri();
         if ($baseUri instanceof UriInterface) {
