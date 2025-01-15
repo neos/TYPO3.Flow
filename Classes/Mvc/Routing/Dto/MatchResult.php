@@ -39,7 +39,7 @@ final class MatchResult
      * @param mixed $matchedValue
      * @param RouteTags $tags
      */
-    public function __construct($matchedValue, RouteTags $tags = null, RouteLifetime $lifetime = null)
+    public function __construct($matchedValue, ?RouteTags $tags = null, ?RouteLifetime $lifetime = null)
     {
         $this->matchedValue = $matchedValue;
         $this->tags = $tags;

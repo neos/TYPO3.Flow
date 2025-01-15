@@ -130,7 +130,7 @@ class FloatConverter extends AbstractTypeConverter
      * @throws InvalidPropertyMappingConfigurationException
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source === null || $source === '') {
             return null;

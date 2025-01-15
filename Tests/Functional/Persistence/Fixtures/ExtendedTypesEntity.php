@@ -99,7 +99,7 @@ class ExtendedTypesEntity
      * @param \DateTime $date
      * @return $this
      */
-    public function setDate(\DateTime $date = null)
+    public function setDate(?\DateTime $date = null)
     {
         $this->date = $date;
         return $this;
@@ -117,7 +117,7 @@ class ExtendedTypesEntity
      * @param \DateTime $dateTimeTz
      * @return $this
      */
-    public function setDateTimeTz(\DateTime $dateTimeTz = null)
+    public function setDateTimeTz(?\DateTime $dateTimeTz = null)
     {
         $this->dateTimeTz = $dateTimeTz;
         return $this;
@@ -135,7 +135,7 @@ class ExtendedTypesEntity
      * @param \DateTime $dateTime
      * @return $this
      */
-    public function setDateTime(\DateTime $dateTime = null)
+    public function setDateTime(?\DateTime $dateTime = null)
     {
         $this->dateTime = $dateTime;
         return $this;
@@ -153,7 +153,7 @@ class ExtendedTypesEntity
      * @param \DateTimeImmutable $dateTime
      * @return $this
      */
-    public function setDateTimeImmutable(\DateTimeImmutable $dateTime = null)
+    public function setDateTimeImmutable(?\DateTimeImmutable $dateTime = null)
     {
         $this->dateTimeImmutable = $dateTime;
         return $this;
@@ -171,7 +171,7 @@ class ExtendedTypesEntity
      * @param \DateTimeInterface $dateTime
      * @return $this
      */
-    public function setDateTimeInterface(\DateTimeInterface $dateTime = null)
+    public function setDateTimeInterface(?\DateTimeInterface $dateTime = null)
     {
         $this->dateTimeInterface = $dateTime;
         return $this;
@@ -189,7 +189,7 @@ class ExtendedTypesEntity
      * @param array $simpleArray
      * @return $this
      */
-    public function setSimpleArray(array $simpleArray = null)
+    public function setSimpleArray(?array $simpleArray = null)
     {
         $this->simpleArray = $simpleArray;
         return $this;
@@ -207,7 +207,7 @@ class ExtendedTypesEntity
      * @param array $jsonArray
      * @return $this
      */
-    public function setJsonArray(array $jsonArray = null)
+    public function setJsonArray(?array $jsonArray = null)
     {
         $this->jsonArray = $jsonArray;
         return $this;

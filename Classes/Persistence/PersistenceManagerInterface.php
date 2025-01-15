@@ -99,7 +99,7 @@ interface PersistenceManagerInterface
      * @return object|null The object for the identifier if it is known, or NULL
      * @api
      */
-    public function getObjectByIdentifier($identifier, string $objectType = null, bool $useLazyLoading = false);
+    public function getObjectByIdentifier($identifier, ?string $objectType = null, bool $useLazyLoading = false);
 
     /**
      * Converts the given object into an array containing the identity of the domain object.

@@ -32,7 +32,7 @@ class PackageFactory
      * @return PackageInterface&PackageKeyAwareInterface
      * @throws Exception\CorruptPackageException
      */
-    public function create(string $packagesBasePath, string $packagePath, FlowPackageKey $packageKey, string $composerName, array $autoloadConfiguration = [], array $packageClassInformation = null): PackageInterface
+    public function create(string $packagesBasePath, string $packagePath, FlowPackageKey $packageKey, string $composerName, array $autoloadConfiguration = [], ?array $packageClassInformation = null): PackageInterface
     {
         $absolutePackagePath = Files::concatenatePaths([$packagesBasePath, $packagePath]) . '/';
 

@@ -92,7 +92,7 @@ class SessionDataContainer
      *
      * @param ActionRequest $interceptedRequest
      */
-    public function setInterceptedRequest(ActionRequest $interceptedRequest = null): void
+    public function setInterceptedRequest(?ActionRequest $interceptedRequest = null): void
     {
         $this->interceptedRequest = $interceptedRequest;
     }

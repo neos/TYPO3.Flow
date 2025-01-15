@@ -197,7 +197,7 @@ class Service
      * @param int|null $maxResult
      * @return mixed
      */
-    public function runDql(string $dql, int $hydrationMode = \Doctrine\ORM\Query::HYDRATE_OBJECT, int $firstResult = null, int $maxResult = null)
+    public function runDql(string $dql, int $hydrationMode = \Doctrine\ORM\Query::HYDRATE_OBJECT, ?int $firstResult = null, ?int $maxResult = null)
     {
         $query = $this->entityManager->createQuery($dql);
         if ($firstResult !== null) {
@@ -310,7 +310,7 @@ class Service
      * @return string
      * @throws DBALException
      */
-    public function executeMigrations(string $version = 'latest', string $outputPathAndFilename = null, $dryRun = false, $quiet = false, ?string $overrideMigrationFolderName = null): string
+    public function executeMigrations(string $version = 'latest', ?string $outputPathAndFilename = null, $dryRun = false, $quiet = false, ?string $overrideMigrationFolderName = null): string
     {
         $this->initializeMetadataStorage($overrideMigrationFolderName);
         $dependencyFactory = $this->getDependencyFactory($overrideMigrationFolderName);
@@ -420,7 +420,7 @@ class Service
      * @throws DBALException
      * @throws FilesException
      */
-    public function executeMigration(string $version, string $direction = 'up', string $outputPathAndFilename = null, bool $dryRun = false, ?string $overrideMigrationFolderName = null): string
+    public function executeMigration(string $version, string $direction = 'up', ?string $outputPathAndFilename = null, bool $dryRun = false, ?string $overrideMigrationFolderName = null): string
     {
         $this->initializeMetadataStorage($overrideMigrationFolderName);
         $dependencyFactory = $this->getDependencyFactory($overrideMigrationFolderName);
@@ -623,7 +623,7 @@ class Service
      * @throws DBALException
      * @throws FilesException
      */
-    public function generateMigration(bool $diffAgainstCurrent = true, string $filterExpression = null, ?string $overrideMigrationFolderName = null): array
+    public function generateMigration(bool $diffAgainstCurrent = true, ?string $filterExpression = null, ?string $overrideMigrationFolderName = null): array
     {
         $dependencyFactory = $this->getDependencyFactory($overrideMigrationFolderName);
 

@@ -576,7 +576,7 @@ class Context
      * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function setInterceptedRequest(ActionRequest $interceptedRequest = null)
+    public function setInterceptedRequest(?ActionRequest $interceptedRequest = null)
     {
         if ($this->initialized === false) {
             $this->initialize();

@@ -74,7 +74,7 @@ class SessionConverter extends AbstractTypeConverter
      * @param PropertyMappingConfigurationInterface|null $configuration
      * @return object the target type
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         return $this->sessionManager->getSession($source);
     }

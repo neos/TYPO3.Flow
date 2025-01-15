@@ -43,7 +43,7 @@ class BoolToIntConverter extends AbstractTypeConverter
      * @param PropertyMappingConfigurationInterface|null $configuration
      * @return bool|Error
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         return $source ? 42 : -42;
     }

@@ -86,7 +86,7 @@ class DatabaseCommandController extends CommandController
      * @throws DBALException
      * @throws StopActionException
      */
-    public function setCharsetCommand(string $characterSet = 'utf8mb4', string $collation = 'utf8mb4_unicode_ci', string $output = null, bool $verbose = false)
+    public function setCharsetCommand(string $characterSet = 'utf8mb4', string $collation = 'utf8mb4_unicode_ci', ?string $output = null, bool $verbose = false)
     {
         if (!in_array($this->persistenceSettings['backendOptions']['driver'], ['pdo_mysql', 'mysqli'])) {
             $this->outputLine('Database charset/collation fixing is only supported on MySQL.');
@@ -118,7 +118,7 @@ class DatabaseCommandController extends CommandController
      * @throws ConnectionException
      * @throws DBALException
      */
-    protected function convertToCharacterSetAndCollation(string $characterSet, string $collation, string $outputPathAndFilename = null, bool $verbose = false)
+    protected function convertToCharacterSetAndCollation(string $characterSet, string $collation, ?string $outputPathAndFilename = null, bool $verbose = false)
     {
         $statements = ['SET foreign_key_checks = 0'];
 

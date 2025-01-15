@@ -121,7 +121,7 @@ class DateTimeConverter extends AbstractTypeConverter
      * @throws InvalidPropertyMappingConfigurationException
      * @throws TypeConverterException
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         $dateFormat = $this->getDefaultDateFormat($configuration);
         $isFormatSpecified = false;
@@ -197,7 +197,7 @@ class DateTimeConverter extends AbstractTypeConverter
      * @return string
      * @throws InvalidPropertyMappingConfigurationException
      */
-    protected function getDefaultDateFormat(PropertyMappingConfigurationInterface $configuration = null)
+    protected function getDefaultDateFormat(?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($configuration === null) {
             return self::DEFAULT_DATE_FORMAT;

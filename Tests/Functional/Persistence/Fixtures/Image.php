@@ -61,7 +61,7 @@ class Image
     /**
      * @param CleanupObject $relatedObject
      */
-    public function setRelatedObject(CleanupObject $relatedObject = null)
+    public function setRelatedObject(?CleanupObject $relatedObject = null)
     {
         $this->relatedObject = $relatedObject;
     }

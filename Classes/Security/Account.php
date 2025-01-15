@@ -314,7 +314,7 @@ class Account
      * @return void
      * @api
      */
-    public function setExpirationDate(\DateTime $expirationDate = null)
+    public function setExpirationDate(?\DateTime $expirationDate = null)
     {
         $this->expirationDate = $expirationDate;
     }

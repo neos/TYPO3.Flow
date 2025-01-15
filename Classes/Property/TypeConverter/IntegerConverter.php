@@ -52,7 +52,7 @@ class IntegerConverter extends AbstractTypeConverter
      * @return integer|null|Error
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         if ($source instanceof \DateTimeInterface) {
             return (int)$source->format('U');

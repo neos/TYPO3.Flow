@@ -80,7 +80,7 @@ class ResourceCommandController extends CommandController
      * @param bool $quiet Don't print the progress-bar
      * @return void
      */
-    public function publishCommand(string $collection = null, bool $quiet = false)
+    public function publishCommand(?string $collection = null, bool $quiet = false)
     {
         try {
             if ($collection === null) {

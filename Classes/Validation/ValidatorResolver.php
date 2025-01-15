@@ -160,7 +160,7 @@ class ValidatorResolver
      * @throws Exception\InvalidTypeHintException
      * @throws Exception\InvalidValidationOptionsException
      */
-    public function buildMethodArgumentsValidatorConjunctions($className, $methodName, array $methodParameters = null, array $methodValidateAnnotations = null)
+    public function buildMethodArgumentsValidatorConjunctions($className, $methodName, ?array $methodParameters = null, ?array $methodValidateAnnotations = null)
     {
         $validatorConjunctions = [];
 

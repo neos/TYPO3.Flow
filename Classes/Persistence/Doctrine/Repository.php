@@ -60,7 +60,7 @@ abstract class Repository extends EntityRepository implements RepositoryInterfac
      * @param EntityManagerInterface $entityManager The EntityManager to use.
      * @param ClassMetadata|null $classMetadata The class descriptor.
      */
-    public function __construct(EntityManagerInterface $entityManager, ClassMetadata $classMetadata = null)
+    public function __construct(EntityManagerInterface $entityManager, ?ClassMetadata $classMetadata = null)
     {
         if ($classMetadata === null) {
             if (defined('static::ENTITY_CLASSNAME') === false) {
