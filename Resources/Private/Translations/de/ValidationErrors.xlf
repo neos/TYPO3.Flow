@@ -248,6 +248,11 @@
 				<source>The image orientation "{0}" is not allowed</source>
         <target state="final">Das Bildformat "{0}" ist nicht erlaubt</target>
       </trans-unit>
+      <!-- Package "Neos.Form" -->
+      <trans-unit id="1327865764" xml:space="preserve">
+				<source>The file extension "{0}" is not allowed.</source>
+            <target state="translated">Die Dateiendung "{0}" ist nicht erlaubt.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
