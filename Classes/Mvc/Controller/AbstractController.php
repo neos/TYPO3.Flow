@@ -199,7 +199,7 @@ abstract class AbstractController implements ControllerInterface
      * @see redirect()
      * @api
      */
-    protected function forward(string $actionName, string $controllerName = null, string $packageKey = null, array $arguments = []): never
+    protected function forward(string $actionName, ?string $controllerName = null, ?string $packageKey = null, array $arguments = []): never
     {
         $nextRequest = clone $this->request;
         $nextRequest->setControllerActionName($actionName);
@@ -269,7 +269,7 @@ abstract class AbstractController implements ControllerInterface
      * @see forward()
      * @api
      */
-    protected function redirect(string $actionName, ?string $controllerName = null, ?string $packageKey = null, array $arguments = [], int $delay = 0, int $statusCode = 303, string $format = null): never
+    protected function redirect(string $actionName, ?string $controllerName = null, ?string $packageKey = null, array $arguments = [], int $delay = 0, int $statusCode = 303, ?string $format = null): never
     {
         if ($packageKey !== null && str_contains($packageKey, '\\') !== false) {
             [$packageKey, $subpackageKey] = explode('\\', $packageKey, 2);
