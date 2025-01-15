@@ -54,7 +54,7 @@ class CollectionConverter extends AbstractTypeConverter
      * @return ArrayCollection
      * @api
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
     {
         return new ArrayCollection($convertedChildProperties);
     }

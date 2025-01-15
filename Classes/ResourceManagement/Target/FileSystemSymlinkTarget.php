@@ -35,7 +35,7 @@ class FileSystemSymlinkTarget extends FileSystemTarget
      * @param callable $callback Function called after each resource publishing
      * @return void
      */
-    public function publishCollection(CollectionInterface $collection, callable $callback = null)
+    public function publishCollection(CollectionInterface $collection, ?callable $callback = null)
     {
         $storage = $collection->getStorage();
         if ($storage instanceof PackageStorage) {

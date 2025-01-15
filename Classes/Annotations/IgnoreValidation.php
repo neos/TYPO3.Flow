@@ -38,7 +38,7 @@ final class IgnoreValidation
      */
     public $evaluate = false;
 
-    public function __construct(string $argumentName = null, bool $evaluate = false)
+    public function __construct(?string $argumentName = null, bool $evaluate = false)
     {
         $this->argumentName = $argumentName ? ltrim($argumentName, '$') : null;
         $this->evaluate = $evaluate;

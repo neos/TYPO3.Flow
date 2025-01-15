@@ -96,7 +96,7 @@ abstract class AbstractMethodInterceptorBuilder
      * @param bool $useArgumentsArray If set, the $methodArguments array will be built from $arguments instead of using the actual parameter variables.
      * @return string The generated code to be used in an "array()" definition
      */
-    protected function buildMethodArgumentsArrayCode(string $className = null, string $methodName = null, bool $useArgumentsArray = false): string
+    protected function buildMethodArgumentsArrayCode(?string $className = null, ?string $methodName = null, bool $useArgumentsArray = false): string
     {
         if ($className === null || $methodName === null) {
             return '';
@@ -129,7 +129,7 @@ abstract class AbstractMethodInterceptorBuilder
      * @param string|null $className Name of the class the method is declared in
      * @return string The generated parameters code
      */
-    protected function buildSavedConstructorParametersCode(string $className = null): string
+    protected function buildSavedConstructorParametersCode(?string $className = null): string
     {
         if ($className === null) {
             return '';
@@ -156,7 +156,7 @@ abstract class AbstractMethodInterceptorBuilder
      * @param string|null $declaringClassName Name of the declaring class. This is usually the same as the $targetClassName. However, it is the introduction interface for introduced methods.
      * @return string PHP code to be used in the method interceptor
      */
-    protected function buildAdvicesCode(array $groupedAdvices, string $methodName = null, string $targetClassName = null, string $declaringClassName = null): string
+    protected function buildAdvicesCode(array $groupedAdvices, ?string $methodName = null, ?string $targetClassName = null, ?string $declaringClassName = null): string
     {
         $advicesCode = $this->buildMethodArgumentsArrayCode($declaringClassName, $methodName, ($methodName === '__construct'));
 

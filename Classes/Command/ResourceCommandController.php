@@ -78,7 +78,7 @@ class ResourceCommandController extends CommandController
      * @param string $collection If specified, only resources of this collection are published. Example: 'persistent'
      * @return void
      */
-    public function publishCommand(string $collection = null)
+    public function publishCommand(?string $collection = null)
     {
         try {
             if ($collection === null) {

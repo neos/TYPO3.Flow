@@ -637,7 +637,7 @@ class Scripts
      * @param string $filenamePattern Optional pattern for filenames to consider for file monitoring (regular expression). @see FileMonitor::monitorDirectory()
      * @return void
      */
-    protected static function monitorDirectoryIfItExists(FileMonitor $fileMonitor, string $path, string $filenamePattern = null)
+    protected static function monitorDirectoryIfItExists(FileMonitor $fileMonitor, string $path, ?string $filenamePattern = null)
     {
         if (is_dir($path)) {
             $fileMonitor->monitorDirectory($path, $filenamePattern);

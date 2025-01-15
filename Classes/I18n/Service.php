@@ -124,7 +124,7 @@ class Service
      * @see Configuration::setFallbackRule()
      * @api
      */
-    public function getLocalizedFilename($pathAndFilename, Locale $locale = null, $strict = false)
+    public function getLocalizedFilename($pathAndFilename, ?Locale $locale = null, $strict = false)
     {
         if ($locale === null) {
             $locale = $this->configuration->getCurrentLocale();
@@ -177,7 +177,7 @@ class Service
      * @see Configuration::setFallbackRule()
      * @api
      */
-    public function getXliffFilenameAndPath($path, $sourceName, Locale $locale = null)
+    public function getXliffFilenameAndPath($path, $sourceName, ?Locale $locale = null)
     {
         if ($locale === null) {
             $locale = $this->configuration->getCurrentLocale();

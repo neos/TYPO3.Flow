@@ -881,7 +881,7 @@ class PackageManager
      * @param string $autoloadNamespace
      * @return string
      */
-    protected function derivePackageKey(string $composerName, string $packageType = null, string $packagePath = '', string $autoloadNamespace = null): string
+    protected function derivePackageKey(string $composerName, ?string $packageType = null, string $packagePath = '', ?string $autoloadNamespace = null): string
     {
         $packageKey = '';
 

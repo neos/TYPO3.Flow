@@ -66,7 +66,7 @@ class RoutingTest extends FunctionalTestCase
      * @param array $matchResults
      * @return ActionRequest
      */
-    protected function createActionRequest(ServerRequestInterface $httpRequest, array $matchResults = null): ActionRequest
+    protected function createActionRequest(ServerRequestInterface $httpRequest, ?array $matchResults = null): ActionRequest
     {
         $actionRequest = ActionRequest::fromHttpRequest($httpRequest);
         if ($matchResults !== null) {
@@ -203,7 +203,7 @@ class RoutingTest extends FunctionalTestCase
      * @test
      * @dataProvider routeTestsDataProvider
      */
-    public function routeTests($requestUri, $expectedMatchingRouteName, $expectedControllerObjectName = null, array $expectedArguments = null)
+    public function routeTests($requestUri, $expectedMatchingRouteName, $expectedControllerObjectName = null, ?array $expectedArguments = null)
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri($requestUri));
         try {

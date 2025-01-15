@@ -132,7 +132,7 @@ class TargetClass01 implements SayHelloInterface
      * @param Fixtures\Name $name
      * @return void
      */
-    public function setCurrentName(Fixtures\Name $name = null)
+    public function setCurrentName(?Fixtures\Name $name = null)
     {
         $this->currentName = $name;
     }
