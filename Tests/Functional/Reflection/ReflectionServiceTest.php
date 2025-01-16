@@ -216,6 +216,7 @@ class ReflectionServiceTest extends FunctionalTestCase
                 'allowsNull' => false,
                 'defaultValue' => null,
                 'scalarDeclaration' => false,
+                'annotations' => [],
             ],
             'param2' => [
                 'position' => 1,
@@ -227,6 +228,7 @@ class ReflectionServiceTest extends FunctionalTestCase
                 'allowsNull' => false,
                 'defaultValue' => null,
                 'scalarDeclaration' => false,
+                'annotations' => [],
             ],
             'param3' => [
                 'position' => 2,
@@ -238,6 +240,7 @@ class ReflectionServiceTest extends FunctionalTestCase
                 'allowsNull' => true,
                 'defaultValue' => null,
                 'scalarDeclaration' => false,
+                'annotations' => [],
             ],
         ];
         self::assertSame($expectedResult, $methodParameters);
