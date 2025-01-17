@@ -91,7 +91,7 @@ class Session implements CookieEnabledInterface
         return new static();
     }
 
-    public static function createRemote(string $sessionIdentifier, string $storageIdentifier, int $lastActivityTimestamp = null, array $tags): self
+    public static function createRemote(string $sessionIdentifier, string $storageIdentifier, ?int $lastActivityTimestamp = null, array $tags = []): self
     {
         $session = new static();
         $session->sessionMetaData = new SessionMetaData(

@@ -946,7 +946,7 @@ class ReflectionService
      * @return array<object>
      * @api
      */
-    public function getPropertyAnnotations(string $className, string $propertyName, string $annotationClassName = null): array
+    public function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null): array
     {
         $className = $this->prepareClassReflectionForUsage($className);
         if (!isset($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_ANNOTATIONS])) {
