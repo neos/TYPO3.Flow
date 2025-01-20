@@ -248,6 +248,10 @@
         <source>The image orientation "{0}" is not allowed</source>
         <target state="translated">Não é permitida a orientação "{0}" da imagem</target>
       </trans-unit>
+      <trans-unit id="1327865764" xml:space="preserve">
+        <source>The file extension "{0}" is not allowed.</source>
+        <target state="translated">A extensão de ficheiro "{0}" não é permitida.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
