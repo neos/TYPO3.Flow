@@ -20,7 +20,7 @@ Neos:
       exceptionHandler:
         className: 'Neos\Flow\Error\DebugExceptionHandler'
       errorHandler:
-        exceptionalErrors: ['%E_USER_ERROR%', '%E_RECOVERABLE_ERROR%', '%E_WARNING%', '%E_NOTICE%', '%E_USER_WARNING%', '%E_USER_NOTICE%', '%E_STRICT%']
+        exceptionalErrors: ['%E_USER_ERROR%', '%E_RECOVERABLE_ERROR%', '%E_WARNING%', '%E_NOTICE%', '%E_USER_WARNING%', '%E_USER_NOTICE%']
 
     log:
       psr3:
