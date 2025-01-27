@@ -219,7 +219,7 @@ class FileStorage implements ThrowableStorageInterface
      */
     protected function getErrorLogMessage(\Throwable $error)
     {
-        // getCode() does not always return an integer, e.g. in PDOException it can be a string 
+        // getCode() does not always return an integer, e.g. in PDOException it can be a string
         if (is_int($error->getCode()) && $error->getCode() > 0) {
             $errorCodeString = ' #' . $error->getCode();
         } else {
