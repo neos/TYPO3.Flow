@@ -219,11 +219,16 @@ class FileStorage implements ThrowableStorageInterface
      */
     protected function getErrorLogMessage(\Throwable $error)
     {
-        $errorCodeNumber = ($error->getCode() > 0) ? ' #' . $error->getCode() : '';
+        // getCode() does not always return an integer, e.g. in PDOException it can be a string
+        if (is_int($error->getCode()) && $error->getCode() > 0) {
+            $errorCodeString = ' #' . $error->getCode();
+        } else {
+            $errorCodeString = ' [' . $error->getCode() . ']';
+        }
         $backTrace = $error->getTrace();
         $line = isset($backTrace[0]['line']) ? ' in line ' . $backTrace[0]['line'] . ' of ' . $backTrace[0]['file'] : '';
 
-        return 'Exception' . $errorCodeNumber . $line . ': ' . $error->getMessage();
+        return 'Exception' . $errorCodeString . $line . ': ' . $error->getMessage();
     }
 
     /**
