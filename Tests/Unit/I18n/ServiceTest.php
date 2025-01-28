@@ -174,7 +174,7 @@ class ServiceTest extends UnitTestCase
         ]];
 
         $mockCache = $this->createMock(VariableFrontend::class);
-        $mockCache->expects(self::once())->method('has')->with('availableLocales')->will(self::returnValue(false));
+        $mockCache->expects(self::once())->method('get')->with('availableLocales')->will(self::returnValue(false));
 
         $service = $this->getAccessibleMock(I18n\Service::class, ['dummy']);
         $service->_set('localeBasePath', 'vfs://Foo/');
@@ -221,7 +221,7 @@ class ServiceTest extends UnitTestCase
         ]];
 
         $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
-        $mockCache->expects(self::once())->method('has')->with('availableLocales')->will(self::returnValue(false));
+        $mockCache->expects(self::once())->method('get')->with('availableLocales')->will(self::returnValue(false));
 
         $service = $this->getAccessibleMock(I18n\Service::class, ['dummy']);
         $service->_set('localeBasePath', 'vfs://Foo/');
