@@ -19,6 +19,7 @@ use Neos\Flow\Http\Helper\SecurityHelper;
 use Neos\Flow\ObjectManagement\Proxy;
 use Neos\Flow\Package\Package as BasePackage;
 use Neos\Flow\Package\PackageManager;
+use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\ResourceManagement\ResourceRepository;
 use Neos\Flow\Security\Authentication\AuthenticationProviderManager;
@@ -88,10 +89,6 @@ class Package extends BasePackage
                     /** @var PackageManager $packageManager */
                     $packageManager = $bootstrap->getEarlyInstance(Package\PackageManager::class);
                     foreach ($packageManager->getFlowPackages() as $packageKey => $package) {
-                        if ($packageManager->isPackageFrozen($packageKey)) {
-                            continue;
-                        }
-
                         $publicResourcesPath = $package->getResourcesPath() . 'Public/';
                         if (is_dir($publicResourcesPath)) {
                             $publicResourcesFileMonitor->monitorDirectory($publicResourcesPath);
@@ -122,6 +119,7 @@ class Package extends BasePackage
         $dispatcher->connect(Core\Bootstrap::class, 'bootstrapShuttingDown', ObjectManagement\ObjectManagerInterface::class, 'shutdown');
         $dispatcher->connect(Core\Bootstrap::class, 'bootstrapShuttingDown', Configuration\ConfigurationManager::class, 'shutdown');
 
+        /** @see ReflectionService::saveToCache() */
         $dispatcher->connect(Core\Bootstrap::class, 'bootstrapShuttingDown', Reflection\ReflectionService::class, 'saveToCache');
 
         $dispatcher->connect(Command\CoreCommandController::class, 'finishedCompilationRun', Security\Authorization\Privilege\Method\MethodPrivilegePointcutFilter::class, 'savePolicyCache');
