@@ -1710,6 +1710,7 @@ class ReflectionService
         if (class_exists($className)) {
             $interfaceNames = class_implements($className);
             foreach ($interfaceNames as $interfaceName) {
+                $this->loadOrReflectClassIfNecessary($interfaceName);
                 if (isset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS][$className])) {
                     unset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS][$className]);
                 }
@@ -1717,6 +1718,7 @@ class ReflectionService
         } else {
             foreach ($this->availableClassNames as $interfaceNames) {
                 foreach ($interfaceNames as $interfaceName) {
+                    $this->loadOrReflectClassIfNecessary($interfaceName);
                     if (isset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS][$className])) {
                         unset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS][$className]);
                     }
