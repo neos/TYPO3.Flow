@@ -1789,15 +1789,15 @@ class ReflectionService
      */
     public function saveToCache(): void
     {
-        if (!$this->initialized) {
-            $this->initialize();
-        }
-
         if (empty($this->updatedReflectionData)) {
             return;
         }
 
-        $this->saveProductionData();
+        if (!$this->initialized) {
+            $this->initialize();
+        }
+
+        $this->updateCacheEntries();
     }
 
     /**
@@ -1805,7 +1805,7 @@ class ReflectionService
      *
      * @throws Exception
      */
-    protected function saveProductionData(): void
+    private function updateCacheEntries(): void
     {
         $classNames = [];
         foreach ($this->classReflectionData as $className => $reflectionData) {
