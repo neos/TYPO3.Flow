@@ -15,7 +15,6 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Composer\Exception\InvalidConfigurationException;
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Core\Bootstrap;
-use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\SignalSlot\Exception\InvalidSlotException;
 use Neos\Utility\Exception\FilesException;
@@ -229,22 +228,11 @@ class PackageManager
      * precompiled reflection data in order to improve performance.
      *
      * @return array<PackageInterface>
+     * @deprecated since 8.4
      */
     public function getFrozenPackages(): array
     {
-        $frozenPackages = [];
-        if ($this->bootstrap->getContext()->isDevelopment()) {
-            /** @var PackageInterface $package */
-            foreach ($this->packages as $packageKey => $package) {
-                if (isset($this->packageStatesConfiguration['packages'][$package->getComposerName()]['frozen']) &&
-                    $this->packageStatesConfiguration['packages'][$package->getComposerName()]['frozen'] === true
-                ) {
-                    $frozenPackages[$packageKey] = $package;
-                }
-            }
-        }
-
-        return $frozenPackages;
+        return [];
     }
 
     /**
@@ -401,6 +389,7 @@ class PackageManager
      * @param string $toAbsolutePath
      * @return void
      * @throws FilesException
+     * @deprecated since 8.4
      */
     protected function movePackage($fromAbsolutePath, $toAbsolutePath): void
     {
@@ -410,94 +399,15 @@ class PackageManager
     }
 
     /**
-     * Freezes a package
-     *
-     * @param string $packageKey The package to freeze
-     * @return void
-     * @throws Exception\PackageStatesFileNotWritableException
-     * @throws Exception\UnknownPackageException
-     * @throws \Neos\Flow\Exception
-     * @throws FilesException
-     */
-    public function freezePackage($packageKey): void
-    {
-        if (!$this->bootstrap->getContext()->isDevelopment()) {
-            throw new \LogicException('Package freezing is only supported in Development context.', 1338810870);
-        }
-
-        if (!$this->isPackageAvailable($packageKey)) {
-            throw new Exception\UnknownPackageException('Package "' . $packageKey . '" is not available.', 1331715956);
-        }
-        if ($this->isPackageFrozen($packageKey)) {
-            return;
-        }
-
-        $package = $this->packages[$packageKey];
-        $this->bootstrap->getObjectManager()->get(ReflectionService::class)->freezePackageReflection($packageKey);
-
-        $this->packageStatesConfiguration['packages'][$package->getComposerName()]['frozen'] = true;
-        $this->savePackageStates($this->packageStatesConfiguration);
-    }
-
-    /**
      * Tells if a package is frozen
      *
      * @param string $packageKey The package to check
      * @return boolean
+     * @deprecated since 8.4
      */
     public function isPackageFrozen($packageKey): bool
     {
-        if (!isset($this->packages[$packageKey])) {
-            return false;
-        }
-        $composerName = $this->packages[$packageKey]->getComposerName();
-
-        return (
-            $this->bootstrap->getContext()->isDevelopment()
-            && isset($this->packageStatesConfiguration['packages'][$composerName]['frozen'])
-            && $this->packageStatesConfiguration['packages'][$composerName]['frozen'] === true
-        );
-    }
-
-    /**
-     * Unfreezes a package
-     *
-     * @param string $packageKey The package to unfreeze
-     * @return void
-     * @throws Exception\PackageStatesFileNotWritableException
-     * @throws \Neos\Flow\Exception
-     * @throws FilesException
-     */
-    public function unfreezePackage($packageKey): void
-    {
-        if (!$this->isPackageFrozen($packageKey)) {
-            return;
-        }
-        if (!isset($this->packages[$packageKey])) {
-            return;
-        }
-        $composerName = $this->packages[$packageKey]->getComposerName();
-
-        $this->bootstrap->getObjectManager()->get(ReflectionService::class)->unfreezePackageReflection($packageKey);
-
-        unset($this->packageStatesConfiguration['packages'][$composerName]['frozen']);
-        $this->savePackageStates($this->packageStatesConfiguration);
-    }
-
-    /**
-     * Refreezes a package
-     *
-     * @param string $packageKey The package to refreeze
-     * @return void
-     * @throws \Neos\Flow\Exception
-     */
-    public function refreezePackage($packageKey): void
-    {
-        if (!$this->isPackageFrozen($packageKey)) {
-            return;
-        }
-
-        $this->bootstrap->getObjectManager()->get(ReflectionService::class)->unfreezePackageReflection($packageKey);
+        return false;
     }
 
     /**

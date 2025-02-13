@@ -375,9 +375,10 @@ class CacheManager
         $flushDoctrineProxyCache = false;
         $flushPolicyCache = false;
         if (count($modifiedClassNamesWithUnderscores) > 0) {
-            $reflectionStatusCache = $this->getCache('Flow_Reflection_Status');
+            $reflectionDataRuntimeCache = $this->getCache('Flow_Reflection_RuntimeData');
             foreach (array_keys($modifiedClassNamesWithUnderscores) as $classNameWithUnderscores) {
-                $reflectionStatusCache->remove($classNameWithUnderscores);
+                $this->logger->debug('File change detected, removing reflection for ' . $classNameWithUnderscores);
+                $reflectionDataRuntimeCache->remove($classNameWithUnderscores);
                 if ($flushDoctrineProxyCache === false && preg_match('/_Domain_Model_(.+)/', $classNameWithUnderscores) === 1) {
                     $flushDoctrineProxyCache = true;
                 }

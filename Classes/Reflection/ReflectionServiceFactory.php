@@ -16,8 +16,6 @@ use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Log\PsrLoggerFactoryInterface;
-use Neos\Flow\Package\PackageManager;
-use Neos\Flow\Utility\Environment;
 
 /**
  * Factory for getting an reflection service instance.
@@ -64,12 +62,8 @@ class ReflectionServiceFactory
         $reflectionService = new ReflectionService();
         $reflectionService->injectLogger($this->bootstrap->getEarlyInstance(PsrLoggerFactoryInterface::class)->get('systemLogger'));
         $reflectionService->injectSettings($settings);
-        $reflectionService->injectPackageManager($this->bootstrap->getEarlyInstance(PackageManager::class));
-        $reflectionService->setStatusCache($cacheManager->getCache('Flow_Reflection_Status'));
-        $reflectionService->setReflectionDataCompiletimeCache($cacheManager->getCache('Flow_Reflection_CompiletimeData'));
         $reflectionService->setReflectionDataRuntimeCache($cacheManager->getCache('Flow_Reflection_RuntimeData'));
         $reflectionService->setClassSchemataRuntimeCache($cacheManager->getCache('Flow_Reflection_RuntimeClassSchemata'));
-        $reflectionService->injectEnvironment($this->bootstrap->getEarlyInstance(Environment::class));
 
         $this->reflectionService = $reflectionService;
         return $reflectionService;

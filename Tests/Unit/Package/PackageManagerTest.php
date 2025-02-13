@@ -472,36 +472,4 @@ class PackageManagerTest extends UnitTestCase
         $this->mockDispatcher->expects(self::once())->method('dispatch')->with(PackageManager::class, 'packageStatesUpdated');
         $this->packageManager->createPackage('Some.Package', [], 'vfs://Test/Packages/Application');
     }
-
-    /**
-     * @test
-     */
-    public function freezePackageEmitsPackageStatesUpdatedSignal()
-    {
-        $this->mockApplicationContext->expects(self::atLeastOnce())->method('isDevelopment')->will(self::returnValue(true));
-
-        $this->packageManager->createPackage('Some.Package', [
-            'name' => 'some/package'
-        ], 'vfs://Test/Packages/Application');
-
-        $this->mockDispatcher->expects(self::once())->method('dispatch')->with(PackageManager::class, 'packageStatesUpdated');
-        $this->packageManager->freezePackage('Some.Package');
-    }
-
-    /**
-     * @test
-     */
-    public function unfreezePackageEmitsPackageStatesUpdatedSignal()
-    {
-        $this->mockApplicationContext->expects(self::atLeastOnce())->method('isDevelopment')->will(self::returnValue(true));
-
-        $this->packageManager->createPackage('Some.Package', [
-            'name' => 'some/package',
-            'type' => 'neos-package'
-        ], 'vfs://Test/Packages/Application');
-        $this->packageManager->freezePackage('Some.Package');
-
-        $this->mockDispatcher->expects(self::once())->method('dispatch')->with(PackageManager::class, 'packageStatesUpdated');
-        $this->packageManager->unfreezePackage('Some.Package');
-    }
 }
