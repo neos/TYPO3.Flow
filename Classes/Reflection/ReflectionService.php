@@ -17,8 +17,6 @@ use Doctrine\Common\Annotations\PhpParser;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\Proxy as DoctrineProxy;
-use Error;
-use InvalidArgumentException;
 use Neos\Cache\Exception;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Annotations as Flow;
@@ -33,12 +31,6 @@ use Neos\Flow\Reflection\Exception\InvalidValueObjectException;
 use Neos\Utility\TypeHandling;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use ReflectionException;
-use ReflectionIntersectionType;
-use ReflectionNamedType;
-use ReflectionType;
-use ReflectionUnionType;
-use RuntimeException;
 
 /**
  * A service for acquiring reflection based information in a performant way. This
@@ -229,7 +221,7 @@ class ReflectionService
      * @throws InvalidClassException
      * @throws InvalidPropertyTypeException
      * @throws InvalidValueObjectException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function buildReflectionData(array $availableClassNames): void
     {
@@ -282,13 +274,13 @@ class ReflectionService
      * @return string|bool
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getDefaultImplementationClassNameForInterface(string $interfaceName): string|bool
     {
         if (interface_exists($interfaceName) === false) {
-            throw new InvalidArgumentException('"' . $interfaceName . '" does not exist or is not the name of an interface.', 1238769559);
+            throw new \InvalidArgumentException('"' . $interfaceName . '" does not exist or is not the name of an interface.', 1238769559);
         }
         $interfaceName = $this->prepareClassReflectionForUsage($interfaceName);
 
@@ -318,13 +310,13 @@ class ReflectionService
      * @return array
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getAllImplementationClassNamesForInterface(string $interfaceName): array
     {
         if (interface_exists($interfaceName) === false) {
-            throw new InvalidArgumentException('"' . $interfaceName . '" does not exist or is not the name of an interface.', 1238769560);
+            throw new \InvalidArgumentException('"' . $interfaceName . '" does not exist or is not the name of an interface.', 1238769560);
         }
         $interfaceName = $this->prepareClassReflectionForUsage($interfaceName);
 
@@ -339,13 +331,13 @@ class ReflectionService
      * @return array<class-string>
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getAllSubClassNamesForClass(string $className): array
     {
         if (class_exists($className) === false) {
-            throw new InvalidArgumentException('"' . $className . '" does not exist or is not the name of a class.', 1257168042);
+            throw new \InvalidArgumentException('"' . $className . '" does not exist or is not the name of a class.', 1257168042);
         }
         $className = $this->prepareClassReflectionForUsage($className);
         return (isset($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES])) ? array_keys($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES]) : [];
@@ -390,7 +382,7 @@ class ReflectionService
      * @return array<object>
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getClassAnnotations(string $className, string|null $annotationClassName = null): array
     {
@@ -425,7 +417,7 @@ class ReflectionService
      * @return object|null
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getClassAnnotation(string $className, string $annotationClassName): ?object
     {
@@ -442,7 +434,7 @@ class ReflectionService
      *
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isClassImplementationOf(string $className, string $interfaceName): bool
@@ -461,7 +453,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isClassAbstract(string $className): bool
@@ -476,7 +468,7 @@ class ReflectionService
      * @param class-string $className Name of the class to analyze
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isClassFinal(string $className): bool
@@ -492,7 +484,7 @@ class ReflectionService
      * @return bool true if the class is readonly, otherwise false
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isClassReadonly(string $className): bool
@@ -549,7 +541,7 @@ class ReflectionService
      * @return bool
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isMethodFinal(string $className, string $methodName): bool
@@ -564,7 +556,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isMethodStatic(string $className, string $methodName): bool
@@ -577,7 +569,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isMethodPublic(string $className, string $methodName): bool
@@ -590,7 +582,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isMethodProtected(string $className, string $methodName): bool
@@ -603,7 +595,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isMethodPrivate(string $className, string $methodName): bool
@@ -615,7 +607,7 @@ class ReflectionService
     /**
      * Tells if the specified method is tagged with the given tag
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isMethodTaggedWith(string $className, string $methodName, string $tag): bool
@@ -646,7 +638,7 @@ class ReflectionService
      * @param string $methodName
      * @param class-string $annotationClassName
      * @return bool
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isMethodAnnotatedWith(string $className, string $methodName, string $annotationClassName): bool
@@ -661,7 +653,7 @@ class ReflectionService
      * @param class-string|null $annotationClassName
      * @return array<object>
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      *
      */
@@ -706,7 +698,7 @@ class ReflectionService
      * If multiple annotations are set on the target you will
      * get the first instance of them.
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getMethodAnnotation(string $className, string $methodName, string $annotationClassName): ?object
     {
@@ -725,7 +717,7 @@ class ReflectionService
      * @return array<string>
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getClassPropertyNames(string $className): array
@@ -740,7 +732,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function hasMethod(string $className, string $methodName): bool
@@ -752,7 +744,7 @@ class ReflectionService
     /**
      * Returns all tags and their values the specified method is tagged with
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @deprecated since 8.4
      */
     public function getMethodTagsValues(string $className, string $methodName): array
@@ -773,7 +765,7 @@ class ReflectionService
      * @return array An array of parameter names and additional information or an empty array of no parameters were found
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getMethodParameters(string $className, string $methodName): array
@@ -793,7 +785,7 @@ class ReflectionService
      * @return string|null The declared return type of the method or null if none was declared
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getMethodDeclaredReturnType(string $className, string $methodName): ?string
     {
@@ -809,7 +801,7 @@ class ReflectionService
      * @return array<string>
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      *
      */
@@ -838,7 +830,7 @@ class ReflectionService
      * @return array
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getPropertyTagsValues(string $className, string $propertyName): array
@@ -860,7 +852,7 @@ class ReflectionService
      * @return array
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      *
      */
@@ -882,7 +874,7 @@ class ReflectionService
      * @return string|null
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getPropertyType(string $className, string $propertyName): ?string
     {
@@ -896,7 +888,7 @@ class ReflectionService
      * @return bool
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isPropertyPrivate(string $className, string $propertyName): bool
@@ -915,7 +907,7 @@ class ReflectionService
      * @return bool
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isPropertyTaggedWith(string $className, string $propertyName, string $tag): bool
@@ -933,7 +925,7 @@ class ReflectionService
      * @return bool
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function isPropertyAnnotatedWith(string $className, string $propertyName, string $annotationClassName): bool
@@ -951,7 +943,7 @@ class ReflectionService
      * @return array<string>
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getPropertyNamesByAnnotation(string $className, string $annotationClassName): array
@@ -980,7 +972,7 @@ class ReflectionService
      * @return array<object>
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @api
      */
     public function getPropertyAnnotations(string $className, string $propertyName, string $annotationClassName = null): array
@@ -1009,7 +1001,7 @@ class ReflectionService
      * @return object|null
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getPropertyAnnotation(string $className, string $propertyName, string $annotationClassName): ?object
     {
@@ -1053,7 +1045,7 @@ class ReflectionService
      * @return string
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function prepareClassReflectionForUsage(string $className): string
     {
@@ -1077,7 +1069,7 @@ class ReflectionService
      * @throws InvalidClassException
      * @throws InvalidPropertyTypeException
      * @throws InvalidValueObjectException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function reflectEmergedClasses(): void
     {
@@ -1147,7 +1139,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function reflectClass(string $className): void
     {
@@ -1250,8 +1242,8 @@ class ReflectionService
             }
             try {
                 $attributeInstance = $attribute->newInstance();
-            } catch (Error $error) {
-                throw new RuntimeException(sprintf('Attribute "%s" used in class "%s" was not found.', $attribute->getName(), $className), 1695635128, $error);
+            } catch (\Error $error) {
+                throw new \RuntimeException(sprintf('Attribute "%s" used in class "%s" was not found.', $attribute->getName(), $className), 1695635128, $error);
             }
             $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_ANNOTATIONS][$attribute->getName()][] = $attributeInstance;
         }
@@ -1282,7 +1274,7 @@ class ReflectionService
     /**
      * @throws InvalidClassException
      * @throws ClassLoadingForReflectionFailedException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function addParentClass(string $className, ClassReflection $parentClass): void
     {
@@ -1296,7 +1288,7 @@ class ReflectionService
     /**
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function addImplementedInterface(string $className, ClassReflection $interface): void
     {
@@ -1315,7 +1307,7 @@ class ReflectionService
     /**
      * @param class-string $className
      * @param MethodReflection $method
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function reflectClassMethod(string $className, MethodReflection $method): void
     {
@@ -1487,7 +1479,7 @@ class ReflectionService
      * @throws InvalidClassException
      * @throws InvalidPropertyTypeException
      * @throws InvalidValueObjectException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function buildClassSchemata(array $classNames): void
     {
@@ -1507,7 +1499,7 @@ class ReflectionService
      * @throws InvalidClassException
      * @throws InvalidPropertyTypeException
      * @throws InvalidValueObjectException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function buildClassSchema(string $className): ClassSchema
     {
@@ -1550,7 +1542,7 @@ class ReflectionService
      * @throws ClassSchemaConstraintViolationException
      * @throws InvalidClassException
      * @throws InvalidPropertyTypeException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function addPropertiesToClassSchema(ClassSchema $classSchema): void
     {
@@ -1582,7 +1574,7 @@ class ReflectionService
      * @throws ClassSchemaConstraintViolationException
      * @throws InvalidClassException
      * @throws InvalidPropertyTypeException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function evaluateClassPropertyAnnotationsForSchema(ClassSchema $classSchema, string $propertyName): bool
     {
@@ -1639,7 +1631,7 @@ class ReflectionService
      * @throws ClassLoadingForReflectionFailedException
      * @throws ClassSchemaConstraintViolationException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function completeRepositoryAssignments(): void
     {
@@ -1675,7 +1667,7 @@ class ReflectionService
      * @throws ClassLoadingForReflectionFailedException
      * @throws ClassSchemaConstraintViolationException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function makeChildClassesAggregateRoot(ClassSchema $classSchema): void
     {
@@ -1696,7 +1688,7 @@ class ReflectionService
      * @throws ClassLoadingForReflectionFailedException
      * @throws Exception
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function ensureAggregateRootInheritanceChainConsistency(): void
     {
@@ -1826,7 +1818,7 @@ class ReflectionService
      * @return void
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     protected function forgetChangedClasses(): void
     {
@@ -1845,7 +1837,7 @@ class ReflectionService
      *
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     private function forgetClass(string $className): void
     {
@@ -1912,7 +1904,7 @@ class ReflectionService
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     private function loadOrReflectClassIfNecessary(string $className): void
     {
@@ -2005,28 +1997,28 @@ class ReflectionService
     }
 
     /**
-     * @param ReflectionType|null $parameterType
+     * @param \ReflectionType|null $parameterType
      * @return string|null
      */
-    private function renderParameterType(?ReflectionType $parameterType = null): string|null
+    private function renderParameterType(?\ReflectionType $parameterType = null): string|null
     {
         return match (true) {
-            $parameterType instanceof ReflectionUnionType => implode('|', array_map(
-                function (ReflectionNamedType | ReflectionIntersectionType $type) {
-                    if ($type instanceof  ReflectionNamedType) {
+            $parameterType instanceof \ReflectionUnionType => implode('|', array_map(
+                function (\ReflectionNamedType|\ReflectionIntersectionType $type) {
+                    if ($type instanceof \ReflectionNamedType) {
                         return $type->getName();
                     }
                     return '(' . $this->renderParameterType($type) . ')';
                 },
                 $parameterType->getTypes()
             )),
-            $parameterType instanceof ReflectionIntersectionType => implode('&', array_map(
-                function (ReflectionNamedType $type) {
+            $parameterType instanceof \ReflectionIntersectionType => implode('&', array_map(
+                function (\ReflectionNamedType $type) {
                     return $this->renderParameterType($type);
                 },
                 $parameterType->getTypes()
             )),
-            $parameterType instanceof ReflectionNamedType => $parameterType->getName(),
+            $parameterType instanceof \ReflectionNamedType => $parameterType->getName(),
             default => null,
         };
     }
