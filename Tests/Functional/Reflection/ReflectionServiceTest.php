@@ -57,7 +57,7 @@ class ReflectionServiceTest extends FunctionalTestCase
     /**
      * @test
      * @throws
-     * @deprecated
+     * @deprecated since 8.4
      */
     public function theReflectionServiceCorrectlyBuildsMethodTagsValues(): void
     {
