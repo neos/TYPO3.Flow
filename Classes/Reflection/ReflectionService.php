@@ -440,9 +440,7 @@ class ReflectionService
     public function isClassImplementationOf(string $className, string $interfaceName): bool
     {
         $className = $this->prepareClassReflectionForUsage($className);
-
-        $interfaceName = $this->cleanClassName($interfaceName);
-        $this->loadOrReflectClassIfNecessary($interfaceName);
+        $this->prepareClassReflectionForUsage($interfaceName);
 
         return (isset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS][$className]));
     }
@@ -1073,11 +1071,8 @@ class ReflectionService
      */
     protected function reflectEmergedClasses(): void
     {
-        $availableClassnames = [];
-        foreach ($this->availableClassNames as $classNamesInPackage) {
-            $availableClassnames[] = $classNamesInPackage;
-        }
-        $classNamesToReflect = array_merge([], ...$availableClassnames);
+        // flatten nested array structure to a list of classes
+        $classNamesToReflect = array_merge(...array_values($this->availableClassNames));
         $reflectedClassNames = array_keys($this->classReflectionData);
         sort($classNamesToReflect);
         sort($reflectedClassNames);
@@ -1087,9 +1082,9 @@ class ReflectionService
         }
 
         $this->log('Reflected class names did not match class names to reflect', LogLevel::DEBUG);
-        $count = 0;
 
-        $classNameFilterFunction = function ($className) use (&$count): bool {
+        $classNamesToBuildSchemaFor = [];
+        foreach ($newClassNames as $className) {
             $this->loadOrReflectClassIfNecessary($className);
             if (
                 !$this->isClassAnnotatedWith($className, Flow\Entity::class) &&
@@ -1097,7 +1092,7 @@ class ReflectionService
                 !$this->isClassAnnotatedWith($className, ORM\Embeddable::class) &&
                 !$this->isClassAnnotatedWith($className, Flow\ValueObject::class)
             ) {
-                return false;
+                continue;
             }
 
             $scopeAnnotation = $this->getClassAnnotation($className, Flow\Scope::class);
@@ -1105,15 +1100,13 @@ class ReflectionService
                 throw new Exception(sprintf('Classes tagged as entity or value object must be of scope prototype, however, %s is declared as %s.', $className, $scopeAnnotation->value), 1264103349);
             }
 
-            $count++;
-            return true;
+            $classNamesToBuildSchemaFor[] = $className;
         };
 
-        $classNamesToBuildSchemaFor = array_filter($newClassNames, $classNameFilterFunction);
         $this->buildClassSchemata($classNamesToBuildSchemaFor);
 
-        if ($count > 0) {
-            $this->log(sprintf('Reflected %s emerged classes.', $count), LogLevel::INFO, LogEnvironment::fromMethodName(__METHOD__));
+        if ($classNamesToBuildSchemaFor !== []) {
+            $this->log(sprintf('Reflected %s emerged classes.', count($classNamesToBuildSchemaFor)), LogLevel::INFO, LogEnvironment::fromMethodName(__METHOD__));
         }
     }
 
@@ -1822,8 +1815,7 @@ class ReflectionService
      */
     protected function forgetChangedClasses(): void
     {
-        $classNames = array_keys($this->classReflectionData);
-        foreach ($classNames as $className) {
+        foreach ($this->classReflectionData as $className => $_) {
             if (is_string($className) && !$this->reflectionDataRuntimeCache->has($this->produceCacheIdentifierFromClassName($className))) {
                 $this->forgetClass($className);
             }
@@ -1931,7 +1923,7 @@ class ReflectionService
      */
     public function saveToCache(): void
     {
-        if (empty($this->updatedReflectionData)) {
+        if ($this->updatedReflectionData === []) {
             return;
         }
 
@@ -1956,7 +1948,7 @@ class ReflectionService
             }
         }
 
-        foreach (array_keys($this->updatedReflectionData) as $className) {
+        foreach ($this->updatedReflectionData as $className => $_) {
             $reflectionData = $this->classReflectionData[$className];
             $cacheIdentifier = $this->produceCacheIdentifierFromClassName($className);
             $this->reflectionDataRuntimeCache->set($cacheIdentifier, $reflectionData);
