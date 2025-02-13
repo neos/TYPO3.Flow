@@ -14,8 +14,6 @@ namespace Neos\Flow\Command;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cli\CommandController;
 use Neos\Flow\Composer\ComposerUtility;
-use Neos\Flow\Core\Booting\Scripts;
-use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Package\PackageInterface;
 use Neos\Flow\Package\PackageKeyAwareInterface;
 use Neos\Flow\Package\PackageManager;
@@ -33,40 +31,12 @@ class PackageCommandController extends CommandController
     protected $packageManager;
 
     /**
-     * @var array
-     */
-    protected $settings;
-
-    /**
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
-     * @param array $settings The Flow settings
-     * @return void
-     */
-    public function injectSettings(array $settings)
-    {
-        $this->settings = $settings;
-    }
-
-    /**
      * @param PackageManager $packageManager
      * @return void
      */
     public function injectPackageManager(PackageManager $packageManager)
     {
         $this->packageManager = $packageManager;
-    }
-
-    /**
-     * @param Bootstrap $bootstrap
-     * @return void
-     */
-    public function injectBootstrap(Bootstrap $bootstrap)
-    {
-        $this->bootstrap = $bootstrap;
     }
 
     /**
@@ -112,9 +82,7 @@ class PackageCommandController extends CommandController
     public function listCommand(bool $loadingOrder = false)
     {
         $availablePackages = [];
-        $frozenPackages = [];
         $longestPackageKey = 0;
-        $freezeSupported = $this->bootstrap->getContext()->isDevelopment();
 
         foreach ($this->packageManager->getAvailablePackages() as $packageKey => $package) {
             if (strlen($packageKey) > $longestPackageKey) {
@@ -122,10 +90,6 @@ class PackageCommandController extends CommandController
             }
 
             $availablePackages[$packageKey] = $package;
-
-            if ($this->packageManager->isPackageFrozen($packageKey)) {
-                $frozenPackages[$packageKey] = $package;
-            }
         }
 
         if ($loadingOrder === false) {
@@ -135,13 +99,7 @@ class PackageCommandController extends CommandController
         $this->outputLine('PACKAGES:');
         /** @var PackageInterface|PackageKeyAwareInterface $package */
         foreach ($availablePackages as $package) {
-            $frozenState = ($freezeSupported && isset($frozenPackages[$package->getPackageKey()]) ? '* ' : '  ');
-            $this->outputLine(' ' . str_pad($package->getPackageKey(), $longestPackageKey + 3) . $frozenState . str_pad($package->getInstalledVersion(), 15));
-        }
-
-        if (count($frozenPackages) > 0 && $freezeSupported) {
-            $this->outputLine();
-            $this->outputLine(' * frozen package');
+            $this->outputLine(' ' . str_pad($package->getPackageKey(), $longestPackageKey + 3) . str_pad($package->getInstalledVersion(), 15));
         }
     }
 
@@ -165,47 +123,11 @@ class PackageCommandController extends CommandController
      * @return void
      * @see neos.flow:package:unfreeze
      * @see neos.flow:package:refreeze
+     * @deprecated since 8.4
      */
     public function freezeCommand(string $packageKey = 'all')
     {
-        if (!$this->bootstrap->getContext()->isDevelopment()) {
-            $this->outputLine('Package freezing is only supported in Development context.');
-            $this->quit(3);
-        }
-
-        $packagesToFreeze = [];
-
-        if ($packageKey === 'all') {
-            foreach (array_keys($this->packageManager->getAvailablePackages()) as $packageKey) {
-                if (!$this->packageManager->isPackageFrozen($packageKey)) {
-                    $packagesToFreeze[] = $packageKey;
-                }
-            }
-            if ($packagesToFreeze === []) {
-                $this->outputLine('Nothing to do, all packages were already frozen.');
-                $this->quit(0);
-            }
-        } elseif ($packageKey === 'blackberry') {
-            $this->outputLine('http://bit.ly/freeze-blackberry');
-            $this->quit(42);
-        } else {
-            if (!$this->packageManager->isPackageAvailable($packageKey)) {
-                $this->outputLine('Package "%s" is not available.', [$packageKey]);
-                $this->quit(2);
-            }
-
-            if ($this->packageManager->isPackageFrozen($packageKey)) {
-                $this->outputLine('Package "%s" was already frozen.', [$packageKey]);
-                $this->quit(0);
-            }
-
-            $packagesToFreeze = [$packageKey];
-        }
-
-        foreach ($packagesToFreeze as $packageKey) {
-            $this->packageManager->freezePackage($packageKey);
-            $this->outputLine('Froze package "%s".', [$packageKey]);
-        }
+        $this->outputLine('Package freezing is no longer supported, this command is deprecated and will be removed with 9.0.');
     }
 
     /**
@@ -222,47 +144,11 @@ class PackageCommandController extends CommandController
      * @return void
      * @see neos.flow:package:freeze
      * @see neos.flow:cache:flush
+     * @deprecated since 8.4
      */
     public function unfreezeCommand(string $packageKey = 'all')
     {
-        if (!$this->bootstrap->getContext()->isDevelopment()) {
-            $this->outputLine('Package freezing is only supported in Development context.');
-            $this->quit(3);
-        }
-
-        $packagesToUnfreeze = [];
-
-        if ($packageKey === 'all') {
-            foreach (array_keys($this->packageManager->getAvailablePackages()) as $packageKey) {
-                if ($this->packageManager->isPackageFrozen($packageKey)) {
-                    $packagesToUnfreeze[] = $packageKey;
-                }
-            }
-            if ($packagesToUnfreeze === []) {
-                $this->outputLine('Nothing to do, no packages were frozen.');
-                $this->quit(0);
-            }
-        } else {
-            if ($packageKey === null) {
-                $this->outputLine('You must specify a package to unfreeze.');
-                $this->quit(1);
-            }
-
-            if (!$this->packageManager->isPackageAvailable($packageKey)) {
-                $this->outputLine('Package "%s" is not available.', [$packageKey]);
-                $this->quit(2);
-            }
-            if (!$this->packageManager->isPackageFrozen($packageKey)) {
-                $this->outputLine('Package "%s" was not frozen.', [$packageKey]);
-                $this->quit(0);
-            }
-            $packagesToUnfreeze = [$packageKey];
-        }
-
-        foreach ($packagesToUnfreeze as $packageKey) {
-            $this->packageManager->unfreezePackage($packageKey);
-            $this->outputLine('Unfroze package "%s".', [$packageKey]);
-        }
+        $this->outputLine('Package freezing is no longer supported, this command is deprecated and will be removed with 9.0.');
     }
 
     /**
@@ -280,50 +166,11 @@ class PackageCommandController extends CommandController
      * @return void
      * @see neos.flow:package:freeze
      * @see neos.flow:cache:flush
+     * @deprecated since 8.4
      */
     public function refreezeCommand(string $packageKey = 'all')
     {
-        if (!$this->bootstrap->getContext()->isDevelopment()) {
-            $this->outputLine('Package freezing is only supported in Development context.');
-            $this->quit(3);
-        }
-
-        $packagesToRefreeze = [];
-
-        if ($packageKey === 'all') {
-            foreach (array_keys($this->packageManager->getAvailablePackages()) as $packageKey) {
-                if ($this->packageManager->isPackageFrozen($packageKey)) {
-                    $packagesToRefreeze[] = $packageKey;
-                }
-            }
-            if ($packagesToRefreeze === []) {
-                $this->outputLine('Nothing to do, no packages were frozen.');
-                $this->quit(0);
-            }
-        } else {
-            if ($packageKey === null) {
-                $this->outputLine('You must specify a package to refreeze.');
-                $this->quit(1);
-            }
-
-            if (!$this->packageManager->isPackageAvailable($packageKey)) {
-                $this->outputLine('Package "%s" is not available.', [$packageKey]);
-                $this->quit(2);
-            }
-            if (!$this->packageManager->isPackageFrozen($packageKey)) {
-                $this->outputLine('Package "%s" was not frozen.', [$packageKey]);
-                $this->quit(0);
-            }
-            $packagesToRefreeze = [$packageKey];
-        }
-
-        foreach ($packagesToRefreeze as $packageKey) {
-            $this->packageManager->refreezePackage($packageKey);
-            $this->outputLine('Refroze package "%s".', [$packageKey]);
-        }
-
-        Scripts::executeCommand('neos.flow:cache:flush', $this->settings, false);
-        $this->sendAndExit(0);
+        $this->outputLine('Package freezing is no longer supported, this command is deprecated and will be removed with 9.0.');
     }
 
     /**

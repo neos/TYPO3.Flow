@@ -247,7 +247,7 @@ class Scripts
         $throwableStorage = self::initializeExceptionStorage($bootstrap, $settings);
         $bootstrap->setEarlyInstance(ThrowableStorageInterface::class, $throwableStorage);
 
-        /** @var PsrLoggerFactoryInterface $psrLoggerFactoryName */
+        /** @var class-string $psrLoggerFactoryName */
         $psrLoggerFactoryName = $settings['log']['psr3']['loggerFactory'];
         $psrLogConfigurations = $settings['log']['psr3'][$psrLoggerFactoryName] ?? [];
         $psrLogFactory = $psrLoggerFactoryName::create($psrLogConfigurations);
@@ -578,10 +578,6 @@ class Scripts
 
         /** @var FlowPackageInterface $package */
         foreach ($packageManager->getFlowPackages() as $packageKey => $package) {
-            if ($packageManager->isPackageFrozen($packageKey)) {
-                continue;
-            }
-
             self::monitorDirectoryIfItExists($fileMonitors['Flow_ConfigurationFiles'], $package->getConfigurationPath(), '\.y(a)?ml$');
             self::monitorDirectoryIfItExists($fileMonitors['Flow_TranslationFiles'], $package->getResourcesPath() . 'Private/Translations/', '\.xlf');
 

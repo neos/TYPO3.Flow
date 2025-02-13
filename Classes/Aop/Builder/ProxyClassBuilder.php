@@ -441,10 +441,8 @@ class ProxyClassBuilder
      * @param ClassNameIndex $targetClassNameCandidates target class names for advices
      * @param ClassNameIndex $treatedSubClasses Already treated (sub) classes to avoid duplication
      * @return ClassNameIndex The new collection of already treated classes
-     * @throws ClassLoadingForReflectionFailedException
-     * @throws \ReflectionException
-     * @throws InvalidClassException
      * @throws CannotBuildObjectException
+     * @throws \ReflectionException
      */
     protected function proxySubClassesOfClassToEnsureAdvices(string $className, ClassNameIndex $targetClassNameCandidates, ClassNameIndex $treatedSubClasses): ClassNameIndex
     {

@@ -277,7 +277,7 @@ class CacheManagerTest extends UnitTestCase
     {
         $objectClassCache = $this->registerCache('Flow_Object_Classes');
         $objectConfigurationCache = $this->registerCache('Flow_Object_Configuration');
-        $this->registerCache('Flow_Reflection_Status');
+        $this->registerCache('Flow_Reflection_RuntimeData');
 
         $objectClassCache->expects(self::once())->method('remove')->with('Neos_Flow_Cache_CacheManager');
         $objectConfigurationCache->expects(self::once())->method('remove')->with('allCompiledCodeUpToDate');
@@ -294,7 +294,7 @@ class CacheManagerTest extends UnitTestCase
     {
         $objectClassCache = $this->registerCache('Flow_Object_Classes');
         $objectConfigurationCache = $this->registerCache('Flow_Object_Configuration');
-        $this->registerCache('Flow_Reflection_Status');
+        $this->registerCache('Flow_Reflection_RuntimeData');
 
         $objectClassCache->expects(self::once())->method('remove')->with('Neos_Flow_Tests_Unit_Cache_CacheManagerTest');
         $objectConfigurationCache->expects(self::once())->method('remove')->with('allCompiledCodeUpToDate');

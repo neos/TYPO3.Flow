@@ -135,9 +135,6 @@ class CacheCommandController extends CommandController
      * from running, the removal of any temporary data can be forced by specifying
      * the option <b>--force</b>.
      *
-     * This command does not remove the precompiled data provided by frozen
-     * packages unless the <b>--force</b> option is used.
-     *
      * @param boolean $force Force flushing of any temporary data
      * @return void
      * @see neos.flow:cache:warmup
@@ -155,23 +152,6 @@ class CacheCommandController extends CommandController
         $this->outputLine('Flushed all caches for "' . $this->bootstrap->getContext() . '" context.');
         if ($this->lockManager->isSiteLocked()) {
             $this->lockManager->unlockSite();
-        }
-
-        $frozenPackages = [];
-        foreach (array_keys($this->packageManager->getAvailablePackages()) as $packageKey) {
-            if ($this->packageManager->isPackageFrozen($packageKey)) {
-                $frozenPackages[] = $packageKey;
-            }
-        }
-        if ($frozenPackages !== []) {
-            $this->outputFormatted(PHP_EOL . 'Please note that the following package' . (count($frozenPackages) === 1 ? ' is' : 's are') . ' currently frozen: ' . PHP_EOL);
-            $this->outputFormatted(implode(PHP_EOL, $frozenPackages) . PHP_EOL, [], 2);
-
-            $message = 'As code and configuration changes in these packages are not detected, the application may respond ';
-            $message .= 'unexpectedly if modifications were done anyway or the remaining code relies on these changes.' . PHP_EOL . PHP_EOL;
-            $message .= 'You may call <b>package:refreeze all</b> in order to refresh frozen packages or use the <b>--force</b> ';
-            $message .= 'option of this <b>cache:flush</b> command to flush caches if Flow becomes unresponsive.' . PHP_EOL;
-            $this->outputFormatted($message, [$frozenPackages]);
         }
 
         $this->sendAndExit(0);
