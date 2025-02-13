@@ -1232,7 +1232,6 @@ class ReflectionService
         $visibility = $this->extractVisibility($property);
         $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_VISIBILITY] = $visibility;
 
-
         foreach ($property->getTagsValues() as $tagName => $tagValues) {
             $tagValues = $this->reflectPropertyTag($className, $property, $tagName, $tagValues);
             if ($tagValues === null) {
