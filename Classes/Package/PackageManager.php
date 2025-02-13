@@ -232,19 +232,7 @@ class PackageManager
      */
     public function getFrozenPackages(): array
     {
-        $frozenPackages = [];
-        if ($this->bootstrap->getContext()->isDevelopment()) {
-            /** @var PackageInterface $package */
-            foreach ($this->packages as $packageKey => $package) {
-                if (isset($this->packageStatesConfiguration['packages'][$package->getComposerName()]['frozen']) &&
-                    $this->packageStatesConfiguration['packages'][$package->getComposerName()]['frozen'] === true
-                ) {
-                    $frozenPackages[$packageKey] = $package;
-                }
-            }
-        }
-
-        return $frozenPackages;
+        return [];
     }
 
     /**
