@@ -279,7 +279,7 @@ class ReflectionService
         }
         $interfaceName = $this->prepareClassReflectionForUsage($interfaceName);
 
-        $classNamesFound = isset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS]) ? array_keys($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS]) : [];
+        $classNamesFound = array_keys($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS] ?? []);
         if (count($classNamesFound) === 1) {
             return $classNamesFound[0];
         }
@@ -315,7 +315,7 @@ class ReflectionService
         }
         $interfaceName = $this->prepareClassReflectionForUsage($interfaceName);
 
-        return (isset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS])) ? array_keys($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS]) : [];
+        return array_keys($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS] ?? []);
     }
 
     /**
@@ -335,7 +335,7 @@ class ReflectionService
             throw new \InvalidArgumentException('"' . $className . '" does not exist or is not the name of a class.', 1257168042);
         }
         $className = $this->prepareClassReflectionForUsage($className);
-        return (isset($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES])) ? array_keys($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES]) : [];
+        return array_keys($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES] ?? []);
     }
 
     /**
@@ -349,7 +349,7 @@ class ReflectionService
         }
         $annotationClassName = $this->cleanClassName($annotationClassName);
 
-        return (isset($this->annotatedClasses[$annotationClassName]) ? array_keys($this->annotatedClasses[$annotationClassName]) : []);
+        return array_keys($this->annotatedClasses[$annotationClassName] ?? []);
     }
 
     /**
@@ -366,7 +366,7 @@ class ReflectionService
 
         $annotationClassName = $this->cleanClassName($annotationClassName);
 
-        return (isset($this->annotatedClasses[$annotationClassName][$className]));
+        return isset($this->annotatedClasses[$annotationClassName][$className]);
     }
 
     /**
@@ -437,7 +437,7 @@ class ReflectionService
         $className = $this->prepareClassReflectionForUsage($className);
         $this->prepareClassReflectionForUsage($interfaceName);
 
-        return (isset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS][$className]));
+        return isset($this->classReflectionData[$interfaceName][self::DATA_INTERFACE_IMPLEMENTATIONS][$className]);
     }
 
     /**
@@ -510,7 +510,7 @@ class ReflectionService
             $this->initialize();
         }
 
-        return isset($this->classesByMethodAnnotations[$annotationClassName]) ? array_keys($this->classesByMethodAnnotations[$annotationClassName]) : [];
+        return array_keys($this->classesByMethodAnnotations[$annotationClassName] ?? []);
     }
 
     /**
@@ -568,7 +568,7 @@ class ReflectionService
     public function isMethodPublic(string $className, string $methodName): bool
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        return (isset($this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY]) && $this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY] === self::VISIBILITY_PUBLIC);
+        return ($this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY] ?? null) === self::VISIBILITY_PUBLIC;
     }
 
     /**
@@ -581,7 +581,7 @@ class ReflectionService
     public function isMethodProtected(string $className, string $methodName): bool
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        return (isset($this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY]) && $this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY] === self::VISIBILITY_PROTECTED);
+        return ($this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY] ?? null) === self::VISIBILITY_PROTECTED;
     }
 
     /**
@@ -594,7 +594,7 @@ class ReflectionService
     public function isMethodPrivate(string $className, string $methodName): bool
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        return (isset($this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY]) && $this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY] === self::VISIBILITY_PRIVATE);
+        return ($this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_VISIBILITY] ?? null) === self::VISIBILITY_PRIVATE;
     }
 
     /**
@@ -716,7 +716,7 @@ class ReflectionService
     public function getClassPropertyNames(string $className): array
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        return isset($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES]) ? array_keys($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES]) : [];
+        return array_keys($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES] ?? []);
     }
 
     /**
@@ -801,12 +801,10 @@ class ReflectionService
     public function getPropertyNamesByTag(string $className, string $tag): array
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        if (!isset($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES])) {
-            return [];
-        }
 
         $propertyNames = [];
-        foreach ($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES] as $propertyName => $propertyData) {
+        $classProperties = $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES] ?? [];
+        foreach ($classProperties as $propertyName => $propertyData) {
             if (isset($propertyData[self::DATA_PROPERTY_TAGS_VALUES][$tag])) {
                 $propertyNames[$propertyName] = true;
             }
@@ -829,10 +827,6 @@ class ReflectionService
     public function getPropertyTagsValues(string $className, string $propertyName): array
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        if (!isset($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName])) {
-            return [];
-        }
-
         return $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_TAGS_VALUES] ?? [];
     }
 
@@ -852,10 +846,6 @@ class ReflectionService
     public function getPropertyTagValues(string $className, string $propertyName, string $tag): array
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        if (!isset($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName])) {
-            return [];
-        }
-
         return $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_TAGS_VALUES][$tag] ?? [];
     }
 
@@ -887,8 +877,7 @@ class ReflectionService
     public function isPropertyPrivate(string $className, string $propertyName): bool
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        return (isset($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_VISIBILITY])
-            && $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_VISIBILITY] === self::VISIBILITY_PRIVATE);
+        return ($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_VISIBILITY] ?? null) === self::VISIBILITY_PRIVATE;
     }
 
     /**
@@ -942,12 +931,10 @@ class ReflectionService
     public function getPropertyNamesByAnnotation(string $className, string $annotationClassName): array
     {
         $className = $this->prepareClassReflectionForUsage($className);
-        if (!isset($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES])) {
-            return [];
-        }
 
         $propertyNames = [];
-        foreach ($this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES] as $propertyName => $propertyData) {
+        $classProperties = $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES] ?? [];
+        foreach ($classProperties as $propertyName => $propertyData) {
             if (isset($propertyData[self::DATA_PROPERTY_ANNOTATIONS][$annotationClassName])) {
                 $propertyNames[$propertyName] = true;
             }
