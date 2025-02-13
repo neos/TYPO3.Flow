@@ -37,20 +37,15 @@ use Psr\Log\LogLevel;
  * service also builds up class schema information which is used by the Flow's
  * persistence layer.
  *
- * Reflection of classes of all active packages is triggered through the bootstrap's
- * initializeReflectionService() method. In a development context, single classes
- * may be re-reflected once files are modified whereas in a production context
- * reflection is done once and successive requests read from the frozen caches for
- * performance reasons.
+ * The list of available classes from flow packages is determined during initialisation of the
+ * CompileTimeObjectManager which also triggers the initial build of reflection data.
  *
- * The list of available classes is determined by the CompiletimeObjectManager which
- * also triggers the initial build of reflection data in this service.
+ * During shutdown any reflection changes that occurred are saved to the cache.
  *
- * The invalidation of reflection cache entries is done by the CacheManager which
- * in turn is triggered by signals sent by the file monitor.
+ * The invalidation of reflection cache entries is done by the CacheManager during development
+ * via flushClassCachesByChangedFiles by removing the reflected data from the cache.
  *
- * The internal representation of cache data is optimized for memory consumption and
- * speed by using constants which have an integer value.
+ * The internal representation of cache data is optimized for memory consumption.
  *
  * @api
  * @Flow\Scope("singleton")
@@ -1886,13 +1881,6 @@ class ReflectionService
     /**
      * Loads reflection data from the cache or reflects the class if needed.
      *
-     * If the class is completely unknown, this method won't try to load or reflect
-     * it. If it is known and reflection data has been loaded already, it won't be
-     * loaded again.
-     *
-     * In Production context, with frozen caches, this method will load reflection
-     * data for the specified class from the runtime cache.
-     *
      * @param class-string $className
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
@@ -1931,16 +1919,6 @@ class ReflectionService
             $this->initialize();
         }
 
-        $this->updateCacheEntries();
-    }
-
-    /**
-     * Save reflection data to cache in Production context.
-     *
-     * @throws Exception
-     */
-    private function updateCacheEntries(): void
-    {
         $classNames = [];
         foreach ($this->classReflectionData as $className => $reflectionData) {
             if ($this->isClassReflected($className)) {
