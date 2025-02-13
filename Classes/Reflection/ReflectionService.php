@@ -1842,12 +1842,12 @@ class ReflectionService
         }
 
         if (isset($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES])) {
-            foreach (array_keys($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES]) as $subClassName) {
+            foreach ($this->classReflectionData[$className][self::DATA_CLASS_SUBCLASSES] as $subClassName => $_) {
                 $this->forgetClass((string)$subClassName);
             }
         }
 
-        foreach (array_keys($this->annotatedClasses) as $annotationClassName) {
+        foreach ($this->annotatedClasses as $annotationClassName => $_) {
             if (isset($this->annotatedClasses[$annotationClassName][$className])) {
                 unset($this->annotatedClasses[$annotationClassName][$className]);
             }
@@ -1858,7 +1858,7 @@ class ReflectionService
             unset($this->classSchemata[$className]);
         }
 
-        foreach (array_keys($this->classesByMethodAnnotations) as $annotationClassName) {
+        foreach ($this->classesByMethodAnnotations as $annotationClassName => $_) {
             unset($this->classesByMethodAnnotations[$annotationClassName][$className]);
         }
 
