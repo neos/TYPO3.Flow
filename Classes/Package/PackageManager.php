@@ -223,19 +223,6 @@ class PackageManager
     }
 
     /**
-     * Returns an array of PackageInterface objects of all frozen packages.
-     * A frozen package is not considered by file monitoring and provides some
-     * precompiled reflection data in order to improve performance.
-     *
-     * @return array<PackageInterface>
-     * @deprecated since 8.4
-     */
-    public function getFrozenPackages(): array
-    {
-        return [];
-    }
-
-    /**
      * Returns an array of PackageInterface objects of all packages that match
      * the given package state, path, and type filters. All three filters must match, if given.
      *
@@ -253,8 +240,7 @@ class PackageManager
                 $packages = $this->getAvailablePackages();
                 break;
             case 'frozen':
-                $packages = $this->getFrozenPackages();
-                break;
+                throw new Exception\InvalidPackageStateException('The package state "frozen" is has been removed', 1739462316);
             default:
                 throw new Exception\InvalidPackageStateException('The package state "' . $packageState . '" is invalid', 1372458274);
         }
@@ -380,34 +366,6 @@ class PackageManager
         }
 
         return $package;
-    }
-
-    /**
-     * Moves a package from one path to another.
-     *
-     * @param string $fromAbsolutePath
-     * @param string $toAbsolutePath
-     * @return void
-     * @throws FilesException
-     * @deprecated since 8.4
-     */
-    protected function movePackage($fromAbsolutePath, $toAbsolutePath): void
-    {
-        Files::createDirectoryRecursively($toAbsolutePath);
-        Files::copyDirectoryRecursively($fromAbsolutePath, $toAbsolutePath, false, true);
-        Files::removeDirectoryRecursively($fromAbsolutePath);
-    }
-
-    /**
-     * Tells if a package is frozen
-     *
-     * @param string $packageKey The package to check
-     * @return boolean
-     * @deprecated since 8.4
-     */
-    public function isPackageFrozen($packageKey): bool
-    {
-        return false;
     }
 
     /**

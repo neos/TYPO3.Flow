@@ -137,8 +137,6 @@ class CacheCommandController extends CommandController
      * @param boolean $force Force flushing of any temporary data
      * @return void
      * @see neos.flow:cache:warmup
-     * @see neos.flow:package:freeze
-     * @see neos.flow:package:refreeze
      */
     public function flushCommand(bool $force = false)
     {
