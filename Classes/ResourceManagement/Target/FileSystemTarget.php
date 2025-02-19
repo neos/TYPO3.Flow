@@ -329,14 +329,18 @@ class FileSystemTarget implements TargetInterface
         }
 
         try {
-            $targetFileHandle = fopen($targetPathAndFilename, 'w');
-            $result = stream_copy_to_stream($sourceStream, $targetFileHandle);
-            fclose($targetFileHandle);
+            $targetFileHandle = fopen($targetPathAndFilename, 'wb');
+            if ($targetFileHandle === false) {
+                $result = false;
+            } else {
+                $result = stream_copy_to_stream($sourceStream, $targetFileHandle);
+                fclose($targetFileHandle);
+            }
         } catch (\Exception $exception) {
             $result = false;
         }
         if ($result === false) {
-            throw new TargetException(sprintf('Could not publish "%s" into resource publishing target "%s" because the source file could not be copied to the target location.', $sourceStream, $this->name), 1375258399, (isset($exception) ? $exception : null));
+            throw new TargetException(sprintf('Could not publish "%s" into resource publishing target "%s" because the source file could not be copied to the target location "%s".', $sourceStream, $this->name, $targetPathAndFilename), 1375258399, ($exception ?? null));
         }
 
         $this->logger->debug(sprintf('FileSystemTarget: Published file. (target: %s, file: %s)', $this->name, $relativeTargetPathAndFilename));
