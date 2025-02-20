@@ -62,18 +62,18 @@ class ConfigurationCommandController extends CommandController
      *
      * @param string $type Configuration type to show, defaults to Settings
      * @param string $path path to subconfiguration separated by "." like "Neos.Flow"
-     * @param int $level Truncate the configuration at this depth and show '...'
+     * @param int $depth Truncate the configuration at this depth and show '...'
      * @return void
      */
-    public function showCommand(string $type = 'Settings', ?string $path = null, int $level = 0)
+    public function showCommand(string $type = 'Settings', string $path = '', int $depth = 0)
     {
         $availableConfigurationTypes = $this->configurationManager->getAvailableConfigurationTypes();
         if (in_array($type, $availableConfigurationTypes)) {
             $configuration = $this->configurationManager->getConfiguration($type);
-            if ($path !== null) {
+            if ($path !== '') {
                 $configuration = Arrays::getValueByPath($configuration, $path);
             }
-            $configuration = self::truncateArrayAtLevel($configuration, $level);
+            $configuration = self::truncateArrayAtDepth($configuration, $depth);
             $typeAndPath = $type . ($path ? ': ' . $path : '');
             if ($configuration === null) {
                 $this->outputLine('<b>Configuration "%s" was empty!</b>', [$typeAndPath]);
@@ -96,17 +96,17 @@ class ConfigurationCommandController extends CommandController
     }
 
     /**
-     * @param int $truncateLevel 0 for no truncation and 1 to only show the first keys of the array
+     * @param int $maximumDepth 0 for no truncation and 1 to only show the first keys of the array
      * @param int $currentLevel 1 for the start and will be incremented recursively
      */
-    private static function truncateArrayAtLevel(array $array, int $truncateLevel, int $currentLevel = 1): array
+    private static function truncateArrayAtDepth(array $array, int $maximumDepth, int $currentLevel = 1): array
     {
-        if ($truncateLevel <= 0) {
+        if ($maximumDepth <= 0) {
             return $array;
         }
         $truncatedArray = [];
         foreach ($array as $key => $value) {
-            if ($currentLevel >= $truncateLevel) {
+            if ($currentLevel >= $maximumDepth) {
                 $truncatedArray[$key] = '...'; // truncated
                 continue;
             }
@@ -114,7 +114,7 @@ class ConfigurationCommandController extends CommandController
                 $truncatedArray[$key] = $value;
                 continue;
             }
-            $truncatedArray[$key] = self::truncateArrayAtLevel($value, $truncateLevel, $currentLevel + 1);
+            $truncatedArray[$key] = self::truncateArrayAtDepth($value, $maximumDepth, $currentLevel + 1);
         }
         return $truncatedArray;
     }
