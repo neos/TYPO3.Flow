@@ -23,7 +23,16 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * A JSON view
  *
- * @deprecated please use json_encode instead
+ * please return a new response instead in your controller and set the Content-Type to application/json
+ *
+ * ```php
+ * public function myAction()
+ * {
+ *     return new Response(body: json_encode($data, JSON_THROW_ON_ERROR), headers: ['Content-Type' => 'application/json']);
+ * }
+ * ```
+ *
+ * @deprecated with Flow 9.0 please use the native json_encode instead, without relying on the flow object conversion magic
  */
 class JsonView extends AbstractView
 {

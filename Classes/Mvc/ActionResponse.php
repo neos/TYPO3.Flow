@@ -28,13 +28,44 @@ use GuzzleHttp\Psr7\Response;
  * via `$this->response` {@see AbstractController::$response} and pass it along to places.
  * But this behaviour is deprecated!
  *
- * Instead, you can directly return a PSR repose {@see \GuzzleHttp\Psr7\Response} from a controller:
+ * Instead of modifying the repose via $this->response like
+ *
+ * - $this->response->addHttpHeader
+ * - $this->response->setHttpHeader
+ * - $this->response->setContentType
+ * - $this->response->setStatusCode
+ *
+ * you can directly return a PSR repose {@see \GuzzleHttp\Psr7\Response} from a controller.
+ *
+ * *set status code and contents and additional header:*
  *
  * ```php
  * public function myAction()
  * {
  *     return (new Response(status: 200, body: $output))
  *         ->withAddedHeader('X-My-Header', 'foo');
+ * }
+ * ```
+ *
+ * *modify a view response with additional header:*
+ *
+ * ```php
+ * public function myAction()
+ * {
+ *     $response = $this->view->render();
+ *     if (!$response instanceof Response) {
+ *         $response = new Response(body: $response);
+ *     }
+ *     return $response->withAddedHeader('X-My-Header', 'foo');
+ * }
+ * ```
+ *
+ * *render json without using the legacy json view:*
+ *
+ * ```php
+ * public function myAction()
+ * {
+ *     return new Response(body: json_encode($data, JSON_THROW_ON_ERROR), headers: ['Content-Type' => 'application/json']);
  * }
  * ```
  *

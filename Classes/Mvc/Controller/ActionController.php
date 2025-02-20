@@ -11,10 +11,11 @@ namespace Neos\Flow\Mvc\Controller;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
+use Neos\Error\Messages as Error;
 use Neos\Error\Messages\Result;
 use Neos\Flow\Annotations as Flow;
-use Neos\Error\Messages as Error;
 use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Mvc\ActionRequest;
@@ -36,7 +37,6 @@ use Neos\Flow\Property\TypeConverter\Error\TargetNotFoundError;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Utility\TypeHandling;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -563,7 +563,15 @@ class ActionController extends AbstractController
         }
 
         if ($actionResult === null && $this->view instanceof ViewInterface) {
-            return $this->renderView($httpResponse);
+            $result = $this->view->render();
+
+            if ($result instanceof Response) {
+                // merging of the $httpResponse (previously $this->response) was previously done to a limited extend via the use of replaceHttpResponse.
+                // With Flow 9 the returned response will overrule any changes made to $this->response as there is no clear way to merge them.
+                return $result;
+            }
+
+            return $httpResponse->withBody($result);
         }
 
         return $httpResponse->withBody(Utils::streamFor($actionResult));
@@ -827,21 +835,5 @@ class ActionController extends AbstractController
     protected function getErrorFlashMessage()
     {
         return new Error\Error('An error occurred while trying to call %1$s->%2$s()', null, [get_class($this), $this->actionMethodName]);
-    }
-
-    /**
-     * Renders the view and returns the psr response.
-     *
-     * If a stream is returned it will be applied (to the most likely empty response) which was previously available as $this->response.
-     */
-    protected function renderView(ResponseInterface $httpResponse): ResponseInterface
-    {
-        $result = $this->view->render();
-
-        if ($result instanceof StreamInterface) {
-            return $httpResponse->withBody($result);
-        }
-
-        return $result;
     }
 }

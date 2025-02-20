@@ -11,6 +11,7 @@ namespace Neos\Flow\Mvc\Controller;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
 use Neos\Error\Messages as Error;
 use Neos\Flow\Annotations as Flow;
@@ -63,6 +64,17 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * The legacy response which will is provide by this action controller
+     *
+     * Legacy ways to modify a repose:
+     *
+     * - $this->response->addHttpHeader
+     * - $this->response->setHttpHeader
+     * - $this->response->setContentType
+     * - $this->response->setStatusCode
+     *
+     * Please return a new {@see Response} instead from your controller action.
+     * Documentation to adjust your code is provided in {@see ActionResponse}.
+     *
      * @var ActionResponse
      * @deprecated with Flow 9 {@see ActionResponse}
      */
