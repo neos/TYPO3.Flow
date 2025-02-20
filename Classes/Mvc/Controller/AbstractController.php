@@ -21,6 +21,7 @@ use Neos\Flow\Mvc\Exception\InvalidArgumentTypeException;
 use Neos\Flow\Mvc\Exception\InvalidControllerNameException;
 use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
 use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
+use Neos\Flow\Mvc\Routing\RouteValuesNormalizer;
 use Neos\Flow\Persistence\Exception\UnknownObjectException;
 use Neos\Flow\Property\Exception;
 use Psr\Http\Message\UriInterface;
@@ -32,7 +33,6 @@ use Neos\Flow\Mvc\Exception\ForwardException;
 use Neos\Flow\Mvc\Exception\RequiredArgumentMissingException;
 use Neos\Flow\Mvc\Exception\StopActionException;
 use Neos\Flow\Mvc\Routing\UriBuilder;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Validation\ValidatorResolver;
 use Neos\Utility\MediaTypes;
 
@@ -82,9 +82,9 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * @Flow\Inject
-     * @var PersistenceManagerInterface
+     * @var RouteValuesNormalizer
      */
-    protected $persistenceManager;
+    protected $routeValuesNormalizer;
 
     /**
      * A list of IANA media types which are supported by this controller
@@ -225,7 +225,7 @@ abstract class AbstractController implements ControllerInterface
                 $regularArguments[$argumentName] = $argumentValue;
             }
         }
-        $nextRequest->setArguments($this->persistenceManager->convertObjectsToIdentityArrays($regularArguments));
+        $nextRequest->setArguments($this->routeValuesNormalizer->normalizeObjects($regularArguments));
         $this->arguments->removeAll();
 
         $this->forwardToRequest($nextRequest);

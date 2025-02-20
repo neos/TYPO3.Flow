@@ -169,9 +169,9 @@ class Route
 
     /**
      * @Flow\Inject
-     * @var PersistenceManagerInterface
+     * @var RouteValuesNormalizer
      */
-    protected $persistenceManager;
+    protected $routeValuesNormalizer;
 
     public static function fromConfiguration(array $configuration): static
     {
@@ -641,7 +641,7 @@ class Route
 
         if (count($routeValues) > 0) {
             $routeValues = Arrays::removeEmptyElementsRecursively($routeValues);
-            $routeValues = $this->persistenceManager->convertObjectsToIdentityArrays($routeValues);
+            $routeValues = $this->routeValuesNormalizer->normalizeObjects($routeValues);
             if (!$this->appendExceedingArguments) {
                 $internalArguments = $this->extractInternalArguments($routeValues);
                 if ($routeValues !== []) {
