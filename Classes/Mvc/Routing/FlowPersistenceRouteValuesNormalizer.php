@@ -10,11 +10,14 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 
 /**
  * @internal
+ * @Flow\Scope("singleton")
  */
-class FlowPersistenceRouteValuesNormalizer implements RouteValuesNormalizer
+final readonly class FlowPersistenceRouteValuesNormalizer implements RouteValuesNormalizer
 {
-    #[Flow\Inject()]
-    protected PersistenceManagerInterface $persistenceManager;
+    public function __construct(
+        private PersistenceManagerInterface $persistenceManager
+    ) {
+    }
 
     /**
      * Recursively iterates through the given array and turns objects
