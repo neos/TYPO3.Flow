@@ -102,28 +102,6 @@ interface PersistenceManagerInterface
     public function getObjectByIdentifier($identifier, ?string $objectType = null, bool $useLazyLoading = false);
 
     /**
-     * Converts the given object into an array containing the identity of the domain object.
-     *
-     * @param object $object The object to be converted
-     * @return array The identity array in the format array('__identity' => '...')
-     * @throws UnknownObjectException if the given object is not known to the Persistence Manager
-     * @deprecated without public replacement
-     */
-    public function convertObjectToIdentityArray($object): array;
-
-    /**
-     * Recursively iterates through the given array and turns objects
-     * into arrays containing the identity of the domain object.
-     *
-     * @param array $array The array to be iterated over
-     * @return array The modified array without objects
-     * @throws UnknownObjectException if array contains objects that are not known to the Persistence Manager
-     * @deprecated without public replacement
-     * @see convertObjectToIdentityArray()
-     */
-    public function convertObjectsToIdentityArrays(array $array): array;
-
-    /**
      * Return a query object for the given type.
      *
      * @param string $type

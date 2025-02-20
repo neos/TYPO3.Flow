@@ -97,44 +97,6 @@ abstract class AbstractPersistenceManager implements PersistenceManagerInterface
     }
 
     /**
-     * Converts the given object into an array containing the identity of the domain object.
-     *
-     * @param object $object The object to be converted
-     * @return array The identity array in the format array('__identity' => '...')
-     * @throws Exception\UnknownObjectException if the given object is not known to the Persistence Manager
-     */
-    public function convertObjectToIdentityArray($object): array
-    {
-        $identifier = $this->getIdentifierByObject($object);
-        if ($identifier === null) {
-            throw new Exception\UnknownObjectException(sprintf('Tried to convert an object of type "%s" to an identity array, but it is unknown to the Persistence Manager.', get_class($object)), 1302628242);
-        }
-        return ['__identity' => $identifier];
-    }
-
-    /**
-     * Recursively iterates through the given array and turns objects
-     * into an arrays containing the identity of the domain object.
-     *
-     * @param array $array The array to be iterated over
-     * @return array The modified array without objects
-     * @throws Exception\UnknownObjectException if array contains objects that are not known to the Persistence Manager
-     */
-    public function convertObjectsToIdentityArrays(array $array): array
-    {
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $array[$key] = $this->convertObjectsToIdentityArrays($value);
-            } elseif (is_object($value) && $value instanceof \Traversable) {
-                $array[$key] = $this->convertObjectsToIdentityArrays(iterator_to_array($value));
-            } elseif (is_object($value)) {
-                $array[$key] = $this->convertObjectToIdentityArray($value);
-            }
-        }
-        return $array;
-    }
-
-    /**
      * Gives feedback if the persistence Manager has unpersisted changes.
      *
      * This is primarily used to inform the user if he tries to save
