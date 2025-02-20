@@ -9,6 +9,11 @@ use Neos\Flow\Persistence\Exception\UnknownObjectException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 
 /**
+ * Normalizer to convert flow entities in route values to its identity
+ *
+ * The identity will be converted back to the object via the
+ * property mapper {@see \Neos\Flow\Property\TypeConverter\PersistentObjectConverter} in the action controller
+ *
  * @internal
  * @Flow\Scope("singleton")
  */
@@ -21,10 +26,11 @@ final readonly class FlowPersistenceRouteValuesNormalizer implements RouteValues
 
     /**
      * Recursively iterates through the given array and turns objects
-     * into an arrays
+     * into an arrays containing the identity of the domain object.
      *
      * @param array<mixed> $array The array to be iterated over
      * @return array<mixed> The modified array without objects
+     * @throws UnknownObjectException if array contains objects that are not known to the Persistence Manager
      */
     public function normalizeObjects(array $array): array
     {
@@ -40,6 +46,13 @@ final readonly class FlowPersistenceRouteValuesNormalizer implements RouteValues
         return $array;
     }
 
+    /**
+     * Converts the given object into an array containing the identity of the domain object.
+     *
+     * @param object $object The object to be converted
+     * @return array{__identity: string} The identity array in the format array('__identity' => '...')
+     * @throws UnknownObjectException if the given object is not known to the Persistence Manager
+     */
     private function normalizeObject(object $object): array
     {
         $identifier = $this->persistenceManager->getIdentifierByObject($object);
