@@ -13,6 +13,7 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
+use Neos\Flow\Mvc\Routing\RouteValuesNormalizerInterface;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,7 +27,6 @@ use Neos\Flow\Mvc\Exception\RequiredArgumentMissingException;
 use Neos\Flow\Mvc\Exception\StopActionException;
 use Neos\Flow\Mvc\FlashMessage\FlashMessageContainer;
 use Neos\Flow\Mvc\Routing\UriBuilder;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Cli;
@@ -161,11 +161,11 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardSetsControllerAndArgumentsAtTheRequestObjectIfTheyAreSpecified()
     {
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('convertObjectsToIdentityArrays')->will($this->returnArgument(0));
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
+        $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
-        $this->inject($controller, 'persistenceManager', $mockPersistenceManager);
+        $this->inject($controller, 'routeValuesNormalizer', $routeValuesNormalizer);
         $controller->_call('initializeController', $this->mockActionRequest, $this->actionResponse);
 
         $this->mockActionRequest->expects(self::atLeastOnce())->method('setControllerActionName')->with('theTarget');
@@ -188,11 +188,11 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardResetsControllerArguments()
     {
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('convertObjectsToIdentityArrays')->will($this->returnArgument(0));
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
+        $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
-        $this->inject($controller, 'persistenceManager', $mockPersistenceManager);
+        $this->inject($controller, 'routeValuesNormalizer', $routeValuesNormalizer);
         $controller->_call('initializeController', $this->mockActionRequest, $this->actionResponse);
 
         try {
@@ -214,11 +214,11 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardSetsSubpackageKeyIfNeeded()
     {
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('convertObjectsToIdentityArrays')->will($this->returnArgument(0));
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
+        $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
-        $this->inject($controller, 'persistenceManager', $mockPersistenceManager);
+        $this->inject($controller, 'routeValuesNormalizer', $routeValuesNormalizer);
         $controller->_call('initializeController', $this->mockActionRequest, $this->actionResponse);
 
         $this->mockActionRequest->expects(self::atLeastOnce())->method('setControllerActionName')->with('theTarget');
@@ -237,11 +237,11 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardResetsSubpackageKeyIfNotSetInPackageKey()
     {
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('convertObjectsToIdentityArrays')->will($this->returnArgument(0));
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
+        $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
-        $this->inject($controller, 'persistenceManager', $mockPersistenceManager);
+        $this->inject($controller, 'routeValuesNormalizer', $routeValuesNormalizer);
         $controller->_call('initializeController', $this->mockActionRequest, $this->actionResponse);
 
         $this->mockActionRequest->expects(self::atLeastOnce())->method('setControllerActionName')->with('theTarget');
@@ -263,11 +263,11 @@ class AbstractControllerTest extends UnitTestCase
         $originalArguments = ['foo' => 'bar', 'bar' => ['someObject' => new \stdClass()]];
         $convertedArguments = ['foo' => 'bar', 'bar' => ['someObject' => ['__identity' => 'x']]];
 
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::once())->method('convertObjectsToIdentityArrays')->with($originalArguments)->willReturn($convertedArguments);
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
+        $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->with($originalArguments)->willReturn($convertedArguments);
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
-        $this->inject($controller, 'persistenceManager', $mockPersistenceManager);
+        $this->inject($controller, 'routeValuesNormalizer', $routeValuesNormalizer);
         $controller->_call('initializeController', $this->mockActionRequest, $this->actionResponse);
 
         $this->mockActionRequest->expects(self::atLeastOnce())->method('setArguments')->with($convertedArguments);

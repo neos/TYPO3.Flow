@@ -25,7 +25,6 @@ use Neos\Flow\Mvc\Routing\Dto\RouteLifetime;
 use Neos\Flow\Mvc\Routing\Dto\RouteTags;
 use Neos\Flow\Mvc\Routing\Dto\UriConstraints;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Utility\Arrays;
 use Neos\Utility\ObjectAccess;
 
@@ -169,9 +168,9 @@ class Route
 
     /**
      * @Flow\Inject
-     * @var PersistenceManagerInterface
+     * @var RouteValuesNormalizerInterface
      */
-    protected $persistenceManager;
+    protected $routeValuesNormalizer;
 
     public static function fromConfiguration(array $configuration): static
     {
@@ -641,7 +640,7 @@ class Route
 
         if (count($routeValues) > 0) {
             $routeValues = Arrays::removeEmptyElementsRecursively($routeValues);
-            $routeValues = $this->persistenceManager->convertObjectsToIdentityArrays($routeValues);
+            $routeValues = $this->routeValuesNormalizer->normalizeObjects($routeValues);
             if (!$this->appendExceedingArguments) {
                 $internalArguments = $this->extractInternalArguments($routeValues);
                 if ($routeValues !== []) {

@@ -24,7 +24,6 @@ use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Dto\UriConstraints;
 use Neos\Flow\Mvc\Routing\Fixtures\MockRoutePartHandler;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
@@ -48,9 +47,9 @@ class RouteTest extends UnitTestCase
     protected $mockObjectManager;
 
     /**
-     * @var PersistenceManagerInterface|MockObject
+     * @var Routing\RouteValuesNormalizerInterface|MockObject
      */
-    protected $mockPersistenceManager;
+    protected $routeValuesNormalizer;
 
     /**
      * @var array
@@ -67,11 +66,11 @@ class RouteTest extends UnitTestCase
         $this->route = $this->getAccessibleMock(Routing\Route::class, ['dummy']);
         $this->route->_set('objectManager', $this->mockObjectManager);
 
-        $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $this->mockPersistenceManager->method('convertObjectsToIdentityArrays')->will(self::returnCallBack(function ($array) {
+        $this->routeValuesNormalizer = $this->createMock(Routing\RouteValuesNormalizerInterface::class);
+        $this->routeValuesNormalizer->method('normalizeObjects')->will(self::returnCallBack(function ($array) {
             return $array;
         }));
-        $this->inject($this->route, 'persistenceManager', $this->mockPersistenceManager);
+        $this->inject($this->route, 'routeValuesNormalizer', $this->routeValuesNormalizer);
     }
 
     /**
@@ -1162,9 +1161,9 @@ class RouteTest extends UnitTestCase
         $convertedArray = ['foo' => 'bar', 'someObject' => ['__identity' => 'x'], 'baz' => ['someOtherObject' => ['__identity' => 'y']]];
 
 
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::once())->method('convertObjectsToIdentityArrays')->with($originalArray)->willReturn($convertedArray);
-        $this->inject($this->route, 'persistenceManager', $mockPersistenceManager);
+        $routeValuesNormalizer = $this->createMock(Routing\RouteValuesNormalizerInterface::class);
+        $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->with($originalArray)->willReturn($convertedArray);
+        $this->inject($this->route, 'routeValuesNormalizer', $routeValuesNormalizer);
 
         $this->route->setUriPattern('foo');
         $this->route->setAppendExceedingArguments(true);
@@ -1236,7 +1235,7 @@ class RouteTest extends UnitTestCase
         /** @var Routing\Route|MockObject $route */
         $route = $this->getAccessibleMock(Routing\Route::class, ['compareAndRemoveMatchingDefaultValues']);
         $route->setAppendExceedingArguments(true);
-        $this->inject($route, 'persistenceManager', $this->mockPersistenceManager);
+        $this->inject($route, 'routeValuesNormalizer', $this->routeValuesNormalizer);
         $route->setUriPattern('foo');
         $route->setDefaults($defaultValues);
         $route->_set('isParsed', true);
