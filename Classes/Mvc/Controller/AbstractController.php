@@ -21,7 +21,7 @@ use Neos\Flow\Mvc\Exception\InvalidArgumentTypeException;
 use Neos\Flow\Mvc\Exception\InvalidControllerNameException;
 use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
 use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
-use Neos\Flow\Mvc\Routing\RouteValuesNormalizer;
+use Neos\Flow\Mvc\Routing\RouteValuesNormalizerInterface;
 use Neos\Flow\Persistence\Exception\UnknownObjectException;
 use Neos\Flow\Property\Exception;
 use Psr\Http\Message\UriInterface;
@@ -82,7 +82,7 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * @Flow\Inject
-     * @var RouteValuesNormalizer
+     * @var RouteValuesNormalizerInterface
      */
     protected $routeValuesNormalizer;
 

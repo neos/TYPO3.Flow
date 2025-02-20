@@ -47,7 +47,7 @@ class RouteTest extends UnitTestCase
     protected $mockObjectManager;
 
     /**
-     * @var Routing\RouteValuesNormalizer|MockObject
+     * @var Routing\RouteValuesNormalizerInterface|MockObject
      */
     protected $routeValuesNormalizer;
 
@@ -66,7 +66,7 @@ class RouteTest extends UnitTestCase
         $this->route = $this->getAccessibleMock(Routing\Route::class, ['dummy']);
         $this->route->_set('objectManager', $this->mockObjectManager);
 
-        $this->routeValuesNormalizer = $this->createMock(Routing\RouteValuesNormalizer::class);
+        $this->routeValuesNormalizer = $this->createMock(Routing\RouteValuesNormalizerInterface::class);
         $this->routeValuesNormalizer->method('normalizeObjects')->will(self::returnCallBack(function ($array) {
             return $array;
         }));
@@ -1161,7 +1161,7 @@ class RouteTest extends UnitTestCase
         $convertedArray = ['foo' => 'bar', 'someObject' => ['__identity' => 'x'], 'baz' => ['someOtherObject' => ['__identity' => 'y']]];
 
 
-        $routeValuesNormalizer = $this->createMock(Routing\RouteValuesNormalizer::class);
+        $routeValuesNormalizer = $this->createMock(Routing\RouteValuesNormalizerInterface::class);
         $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->with($originalArray)->willReturn($convertedArray);
         $this->inject($this->route, 'routeValuesNormalizer', $routeValuesNormalizer);
 

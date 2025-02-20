@@ -7,7 +7,7 @@ namespace Neos\Flow\Mvc\Routing;
 /**
  * @internal
  */
-interface RouteValuesNormalizer
+interface RouteValuesNormalizerInterface
 {
     /**
      * Normalizes an object into a set of arrays/scalars

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
-use Neos\Flow\Mvc\Routing\RouteValuesNormalizer;
+use Neos\Flow\Mvc\Routing\RouteValuesNormalizerInterface;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -161,7 +161,7 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardSetsControllerAndArgumentsAtTheRequestObjectIfTheyAreSpecified()
     {
-        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizer::class);
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
         $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
@@ -188,7 +188,7 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardResetsControllerArguments()
     {
-        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizer::class);
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
         $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
@@ -214,7 +214,7 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardSetsSubpackageKeyIfNeeded()
     {
-        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizer::class);
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
         $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
@@ -237,7 +237,7 @@ class AbstractControllerTest extends UnitTestCase
      */
     public function forwardResetsSubpackageKeyIfNotSetInPackageKey()
     {
-        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizer::class);
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
         $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->will($this->returnArgument(0));
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
@@ -263,7 +263,7 @@ class AbstractControllerTest extends UnitTestCase
         $originalArguments = ['foo' => 'bar', 'bar' => ['someObject' => new \stdClass()]];
         $convertedArguments = ['foo' => 'bar', 'bar' => ['someObject' => ['__identity' => 'x']]];
 
-        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizer::class);
+        $routeValuesNormalizer = $this->createMock(RouteValuesNormalizerInterface::class);
         $routeValuesNormalizer->expects(self::once())->method('normalizeObjects')->with($originalArguments)->willReturn($convertedArguments);
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);

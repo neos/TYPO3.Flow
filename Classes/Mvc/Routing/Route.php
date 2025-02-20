@@ -25,7 +25,6 @@ use Neos\Flow\Mvc\Routing\Dto\RouteLifetime;
 use Neos\Flow\Mvc\Routing\Dto\RouteTags;
 use Neos\Flow\Mvc\Routing\Dto\UriConstraints;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Utility\Arrays;
 use Neos\Utility\ObjectAccess;
 
@@ -169,7 +168,7 @@ class Route
 
     /**
      * @Flow\Inject
-     * @var RouteValuesNormalizer
+     * @var RouteValuesNormalizerInterface
      */
     protected $routeValuesNormalizer;
 

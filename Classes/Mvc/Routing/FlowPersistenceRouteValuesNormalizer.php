@@ -12,7 +12,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
  * @internal
  * @Flow\Scope("singleton")
  */
-final readonly class FlowPersistenceRouteValuesNormalizer implements RouteValuesNormalizer
+final readonly class FlowPersistenceRouteValuesNormalizer implements RouteValuesNormalizerInterface
 {
     public function __construct(
         private PersistenceManagerInterface $persistenceManager
@@ -40,7 +40,7 @@ final readonly class FlowPersistenceRouteValuesNormalizer implements RouteValues
         return $array;
     }
 
-    private function normalizeObject(object $object): array|string|int|float|bool|null
+    private function normalizeObject(object $object): array
     {
         $identifier = $this->persistenceManager->getIdentifierByObject($object);
         if ($identifier === null) {
